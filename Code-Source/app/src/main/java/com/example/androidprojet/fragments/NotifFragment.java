@@ -24,7 +24,7 @@ public class NotifFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        databaseHelper = new DatabaseHelper(getContext());
+        /*databaseHelper = new DatabaseHelper(getContext());
         user = databaseHelper.getUser();
         if(user.getRole().equals("breeder")){
            // return inflater.inflate(R.layout.fragment_comite, container, false);
@@ -49,11 +49,10 @@ public class NotifFragment extends Fragment {
                 }
             });
             return rootView;
-
         }else{
-
-            return inflater.inflate(R.layout.fragment_demandes, container, false);
-        }
+            //
+        }*/
+        return inflater.inflate(R.layout.fragment_comite, container, false);
     }
 }
 
