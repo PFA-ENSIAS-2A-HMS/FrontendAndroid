@@ -4,62 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/beige"
-    android:padding="4dp">
+    android:background="@drawable/border_item"
+    android:padding="4dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="3dp"
+    android:elevation="4dp">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="393dp"
-        android:layout_height="115dp"
+        android:layout_width="142dp"
+        android:layout_height="120dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="2dp"
         android:scaleType="center"
-        android:src="@drawable/maladie1"
+        android:src="@drawable/icon_doc"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="-5dp" />
 
     <TextView
         android:id="@+id/malade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/logo"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
         android:text="La maladie 1"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="2dp" />
+
     <TextView
         android:id="@+id/date"
-        android:layout_width="80dp"
-        android:layout_height="22dp"
+        android:layout_width="205dp"
+        android:layout_height="18dp"
         android:layout_below="@+id/logo"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="16dp"
-        android:text="28/05/2023"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
+        android:layout_marginStart="10dp"
+        android:text="Le 28/05/2023 à 12h20min"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/docteur"
+        android:layout_width="177dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="10dp"
+        android:text="Chez docteur Mr. Hassan azoui"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/malade"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="357dp"
-        android:layout_height="45dp"
+        android:layout_width="235dp"
+        android:layout_height="42dp"
         android:layout_below="@id/malade"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultrices justo in ex fringilla,eu posuere justo..."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed..."
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/logo"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/malade"
+        app:layout_constraintTop_toBottomOf="@+id/docteur"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

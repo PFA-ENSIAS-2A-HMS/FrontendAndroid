@@ -2,12 +2,14 @@ package com.example.androidprojet.model;
 
 public class DossierMedical {
     private String malade;
+    private String docteur;
     private String date;
     private String Description;
     private int logo;
 
-    public DossierMedical(String malade, String date, String description, int logo) {
+    public DossierMedical(String malade, String docteur, String date, String description, int logo) {
         this.malade = malade;
+        this.docteur = docteur;
         this.date = date;
         Description = description;
         this.logo = logo;
@@ -19,6 +21,14 @@ public class DossierMedical {
 
     public void setMalade(String malade) {
         this.malade = malade;
+    }
+
+    public String getDocteur() {
+        return docteur;
+    }
+
+    public void setDocteur(String docteur) {
+        this.docteur = docteur;
     }
 
     public String getDate() {
