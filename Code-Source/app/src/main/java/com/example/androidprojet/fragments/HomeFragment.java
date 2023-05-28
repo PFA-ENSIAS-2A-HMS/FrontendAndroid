@@ -22,9 +22,12 @@ public class HomeFragment extends Fragment {
     private TextView textView;
 
     private final ArrayList<DossierMedical> dossiersMedical = new ArrayList<>(Arrays.asList(
-            new DossierMedical("Maladie 1", "20/08/2023", "Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur",R.drawable.maladie1),
-            new DossierMedical("Maladie 2", "20/08/2023", "Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur", R.drawable.maladie2),
-            new DossierMedical("Maladie 3", "20/08/2023", "Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur", R.drawable.maladie1)
+            new DossierMedical("Maladie 1", "Chez docteur Kabouri Mouad", "Le 20/08/2023 à 12h20min", "Lorem ipsum dolor sit amet, conser adipiscing elit...",R.drawable.icon_doc),
+            new DossierMedical("Maladie 2", "Chez docteur Kabouri Mouad", "Le 20/08/2023 à 12h20min", "Lorem ipsum dolor sit amet, consect adipiscing elit...", R.drawable.icon_doc),
+            new DossierMedical("Maladie 3", "Chez docteur Kabouri Mouad", "Le 20/08/2023 à 12h20min", "Lorem ipsum dolor sit amet, consect adipiscing elit...", R.drawable.icon_doc),
+            new DossierMedical("Maladie 1", "Chez docteur Kabouri Mouad", "Le 20/08/2023 à 12h20min", "Lorem ipsum dolor sit amet, conser adipiscing elit...",R.drawable.icon_doc),
+            new DossierMedical("Maladie 2", "Chez docteur Kabouri Mouad", "Le 20/08/2023 à 12h20min", "Lorem ipsum dolor sit amet, consect adipiscing elit...", R.drawable.icon_doc),
+            new DossierMedical("Maladie 3", "Chez docteur Kabouri Mouad", "Le 20/08/2023 à 12h20min", "Lorem ipsum dolor sit amet, consect adipiscing elit...", R.drawable.icon_doc)
     ));
 
     @Override
@@ -37,15 +40,19 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_list_rdvs, container, false);
 
-        RecyclerView rv = getActivity().findViewById(R.id.list);
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rv.setAdapter(new DossierMedicalAdapter(getActivity(), dossiersMedical));
-
-        return rootView;
+        return inflater.inflate(R.layout.activity_list_rdvs, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView rv = getActivity().findViewById(R.id.list);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv.setAdapter(new DossierMedicalAdapter(getContext(), dossiersMedical));
+
+    }
 
     /*@Nullable
     @Override

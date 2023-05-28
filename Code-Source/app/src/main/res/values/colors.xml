@@ -18,11 +18,12 @@
     <color name="blue2">#0275D8</color>
     <color name="green">#00baa0</color>
     <color name="green1">#8500BAA0</color>
-    <color name="beige">#FAE8F4F2</color>
+    <color name="beige">#2196F3</color>
     // messagerie
     <color name="grey_10">#e6e6e6</color>
     <color name="overlay_dark_10">#1A000000</color>
     <color name="grey_40">#999999</color>
     <color name="grey_30">#BACDCBCB</color>
+    <color name="grey_20">#eef4ed</color>
 
 </resources>
