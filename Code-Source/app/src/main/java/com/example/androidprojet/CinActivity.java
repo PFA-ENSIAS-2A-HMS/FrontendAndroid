@@ -70,7 +70,7 @@ public class CinActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(receivedEleveur.getCinPath() != null){
-                    Intent intent = new Intent(CinActivity.this, IdentificationPatient.class);
+                    Intent intent = new Intent(CinActivity.this, SignUpPatient.class);
                     intent.putExtra("eleveur", receivedEleveur);
 
                     ProgressDialog progressDialog = new ProgressDialog(CinActivity.this);

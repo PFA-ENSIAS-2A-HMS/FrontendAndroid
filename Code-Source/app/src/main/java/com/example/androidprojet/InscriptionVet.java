@@ -9,10 +9,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,8 +20,6 @@ import com.example.androidprojet.network.ApiConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 
 public class InscriptionVet extends AppCompatActivity {
     private Profil veterinaire;
@@ -99,7 +95,7 @@ public class InscriptionVet extends AppCompatActivity {
                         public void onResponse(int Code,String response) {
                             if(Code==201){
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(InscriptionVet.this, SignInVet.class);
+                                Intent intent = new Intent(InscriptionVet.this, SignInDoctor.class);
                                 startActivity(intent);
                             }else{
                                 progressDialog.dismiss();
@@ -135,7 +131,7 @@ public class InscriptionVet extends AppCompatActivity {
         singInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(InscriptionVet.this,SignInVet.class);
+                Intent intent=new Intent(InscriptionVet.this, SignInDoctor.class);
                 startActivity(intent);
             }
         });
@@ -160,7 +156,7 @@ public class InscriptionVet extends AppCompatActivity {
                 .setMessage("Votre compte a été créé avec succès!");
         builder.setPositiveButton("Sign in", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(InscriptionVet.this, SignInVet.class));
+                startActivity(new Intent(InscriptionVet.this, SignInDoctor.class));
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

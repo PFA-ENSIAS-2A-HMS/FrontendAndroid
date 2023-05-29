@@ -4,28 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SignInVet">
+    tools:context=".SignInDoctor">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:orientation="horizontal">
-
-        <!-- <LinearLayout
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content">
-
-             <ImageView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginStart="26dp"
-                 android:layout_marginTop="40dp"
-                 android:contentDescription="@string/welcomingIcon"
-                 android:src="@drawable/sign_in_vet_1" />
-
-         </LinearLayout>-->
-
 
          <LinearLayout
              android:layout_width="match_parent"
@@ -70,7 +55,7 @@
          <LinearLayout
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginTop="10dp"
+             android:layout_marginTop="15dp"
              android:gravity="center">
 
              <ImageView
@@ -117,7 +102,7 @@
          <FrameLayout
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginTop="16dp"
+             android:layout_marginTop="35dp"
              android:animateLayoutChanges="true">
 
              <Button
@@ -128,7 +113,7 @@
                  android:layout_marginLeft="20dp"
                  android:layout_marginRight="20dp"
                  android:background="@drawable/getstarted_button"
-                 android:text="@string/sign_in"
+                 android:text="S'inscrire"
                  android:textAllCaps="false"
                  android:textColor="@color/white"
                  android:textSize="26sp"
@@ -148,26 +133,15 @@
          <LinearLayout
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginTop="20dp"
+             android:layout_marginTop="10dp"
              android:gravity="center"
              android:orientation="horizontal">
 
              <TextView
-                 android:layout_width="350dp"
+                 android:layout_width="340dp"
                  android:layout_height="wrap_content"
                  android:text="Si vous n'avez pas de compte, veuillez contacter votre administrateur !"
-                 android:textSize="18sp" />
-
-             <!--<Button
-                 android:id="@+id/signUpButton"
-                 style="?android:attr/borderlessButtonStyle"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:background="@null"
-                 android:text="@string/sign_up"
-                 android:textAllCaps="false"
-                 android:textColor="@color/getStartedColor"
-                 android:textSize="20sp" />-->
+                 android:textSize="16sp" />
 
         </LinearLayout>
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".IdentificationPatient"
+    tools:context=".SignUpPatient"
     tools:ignore="contentDescription">
 
 
@@ -57,7 +57,7 @@
                 android:gravity="center"
                 android:text="Votre informations est en sécurité avec nous"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:text="Nom"
                     android:textColor="@color/black"
-                    android:textSize="20sp"></TextView>
+                    android:textSize="18sp"></TextView>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:text="Prénom"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -195,7 +195,8 @@
                 android:background="@drawable/input_name"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
-                android:hint="Votre nom"/>
+                android:hint="Votre nom"
+                android:textSize="14dp"/>
 
             <EditText
                 android:id="@+id/input_prenom"
@@ -207,7 +208,8 @@
                 android:background="@drawable/input_name"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
-                android:hint="Votre prénom"/>
+                android:hint="Votre prénom"
+                android:textSize="14dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -231,7 +233,7 @@
                     android:gravity="center"
                     android:text="@string/CIN_fr"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -257,7 +259,7 @@
                     android:gravity="center"
                     android:text="Date de naissace"
                     android:textColor="@color/black"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -287,7 +289,8 @@
                 android:background="@drawable/input_name"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
-                android:hint="EX000000"/>
+                android:hint="EX000000"
+                android:textSize="14dp"/>
 
             <EditText
                 android:id="@+id/dataNaissance"
@@ -300,7 +303,8 @@
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:onClick="showDatePicker"
-                android:hint="JJ/MM/AAAA"/>
+                android:hint="JJ/MM/AAAA"
+                android:textSize="14dp"/>
 
         </LinearLayout>
 
@@ -309,10 +313,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
+
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -321,9 +327,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/adresse_actuelle_fr"
+                    android:text="Adresse actuelle"
                     android:textColor="@color/black"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -331,34 +337,77 @@
                     android:gravity="center"
                     android:text="@string/star"
                     android:textColor="@color/red"
-                    android:textSize="20sp"></TextView>
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Hospital"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="20sp"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal">
 
+
             <EditText
-                android:id="@+id/input_adresse"
-                android:layout_width="250dp"
+                android:id="@+id/adresse_patient"
+                android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
-                android:autofillHints="homeAddress"
+                android:layout_weight="1"
+                android:autofillHints="cin"
                 android:background="@drawable/input_name"
-                android:inputType="textPostalAddress"
-                android:textAlignment="center" />
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:hint="Votre adresse"
+                android:textSize="14dp"/>
+
+            <EditText
+                android:id="@+id/hospital"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:autofillHints="name"
+                android:background="@drawable/input_name"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:hint="Votre hospital"
+                android:textSize="14dp"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="45dp"
             android:orientation="horizontal">
 
             <Button
@@ -393,14 +442,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="* "
+                android:text="*"
                 android:textColor="#FF0000"
                 android:textSize="18sp" />
 
@@ -408,16 +457,9 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:text="champ(s) obligatoire(s)"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
-
-    <!--<ImageView
-                android:layout_width="152dp"
-                android:layout_height="112dp"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="40dp"
-                android:src="@drawable/identification_logo" />-->

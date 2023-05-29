@@ -3,58 +3,26 @@ package com.example.androidprojet;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.androidprojet.model.Eleveur;
-import com.example.androidprojet.network.ApiConnection;
-import com.example.androidprojet.network.PostEleveur;
-import com.example.androidprojet.retrofit.ApiService;
-import com.example.androidprojet.retrofit.EleveurApi;
-import com.example.androidprojet.retrofit.RetrofitService;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import java.nio.file.Paths;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Pwdactivity extends AppCompatActivity {
     public Button buttonEnregistrer;
@@ -112,7 +80,7 @@ public class Pwdactivity extends AppCompatActivity {
                         public void onResponse(int Code,String response) {
                             if(Code==201){
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(Pwdactivity.this, Attachs1.class);
+                                Intent intent = new Intent(Pwdactivity.this, InsideApp.class);
                                 intent.putExtra("login",eleveur.getPhoneNumber());
                                 intent.putExtra("password",eleveur.getPassword());
                                 intent.putExtra("role","breeder");
@@ -151,7 +119,7 @@ public class Pwdactivity extends AppCompatActivity {
 
                 }*/
 
-                startActivity(new Intent(Pwdactivity.this, Attachs1.class));
+                startActivity(new Intent(Pwdactivity.this, InsideApp.class));
 
             }
         });
