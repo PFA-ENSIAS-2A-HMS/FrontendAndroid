@@ -11,14 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.androidprojet.model.Eleveur;
 
 import java.util.Calendar;
 
 
-public class IdentificationPatient extends AppCompatActivity {
+public class SignUpPatient extends AppCompatActivity {
     public Button buttonPrecedent,buttonSuivant;
     private String selectedGender = "";
     private Eleveur eleveur;
@@ -38,7 +37,7 @@ public class IdentificationPatient extends AppCompatActivity {
         inputNom = findViewById(R.id.input_nom);
         inputPrenom = findViewById(R.id.input_prenom);
         inputCin = findViewById(R.id.cin_patient);
-        inputAdress = findViewById(R.id.input_adresse);
+        inputAdress = findViewById(R.id.adresse_patient);
         dataNaissanceEditText = findViewById(R.id.dataNaissance);
 
         Button buttonFemale = findViewById(R.id.button_female);
@@ -73,7 +72,7 @@ public class IdentificationPatient extends AppCompatActivity {
         buttonPrecedent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(IdentificationPatient.this,ProfessionActivity.class);
+                Intent intent= new Intent(SignUpPatient.this,ProfessionActivity.class);
                 startActivity(intent);
             }
         });
@@ -93,33 +92,33 @@ public class IdentificationPatient extends AppCompatActivity {
                 // naviguer vers l'activite suivante et envoyer les donnee collecter de cette activite
                 reinitialize(inputNom,inputPrenom,inputCin,inputAdress);
                 /*if(selectedGender.equals("")){
-                    Toast.makeText(IdentificationPatient.this, "the field civilité  is required ! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpPatient.this, "the field civilité  is required ! ", Toast.LENGTH_SHORT).show();
                 }else if(nom.equals("")){
-                    inputNom.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.edittext_border));
-                    Toast.makeText(IdentificationPatient.this, "the field nom francais is required ! ", Toast.LENGTH_SHORT).show();
+                    inputNom.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.edittext_border));
+                    Toast.makeText(SignUpPatient.this, "the field nom francais is required ! ", Toast.LENGTH_SHORT).show();
                 }else if(prenom.equals("")){
-                    inputPrenom.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.edittext_border));
-                    Toast.makeText(IdentificationPatient.this, "the field nom arabe is required ! ", Toast.LENGTH_SHORT).show();
+                    inputPrenom.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.edittext_border));
+                    Toast.makeText(SignUpPatient.this, "the field nom arabe is required ! ", Toast.LENGTH_SHORT).show();
                 }else if(cin.equals("")){
-                    inputCin.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.edittext_border));
-                    Toast.makeText(IdentificationPatient.this, "the field cin is required !", Toast.LENGTH_SHORT).show();
+                    inputCin.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.edittext_border));
+                    Toast.makeText(SignUpPatient.this, "the field cin is required !", Toast.LENGTH_SHORT).show();
                 }else if(adress.equals("")){
-                    inputAdress.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.edittext_border));
-                    Toast.makeText(IdentificationPatient.this, "the field adress is required !", Toast.LENGTH_SHORT).show();
+                    inputAdress.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.edittext_border));
+                    Toast.makeText(SignUpPatient.this, "the field adress is required !", Toast.LENGTH_SHORT).show();
                 }else{
                     eleveur.setFullNameAr(prenom);
                     eleveur.setFullNameFr(nom);
                     eleveur.setCin(cin);
                     eleveur.setGender(selectedGender);
                     eleveur.setAddress(adress);
-                    Intent intent= new Intent(IdentificationPatient.this,IdentificationSmsv2.class);
+                    Intent intent= new Intent(SignUpPatient.this,IdentificationSmsv2.class);
                     intent.putExtra("eleveur", eleveur);
 
                     String cinPath = getIntent().getStringExtra("cinPath");
                     intent.putExtra("cinPath", cinPath);
                     startActivity(intent);
                 }*/
-                startActivity(new Intent(IdentificationPatient.this,IdentificationSmsv2.class));
+                startActivity(new Intent(SignUpPatient.this,IdentificationSmsv2.class));
             }
         });
     }
@@ -132,7 +131,7 @@ public class IdentificationPatient extends AppCompatActivity {
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
         // Créer une instance de DatePickerDialog
-        DatePickerDialog datePickerDialog = new DatePickerDialog(IdentificationPatient.this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(SignUpPatient.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -153,10 +152,10 @@ public class IdentificationPatient extends AppCompatActivity {
     }
    public void reinitialize(EditText inputNomCompletFr,EditText inputNomCompletAr,
                             EditText inputCin,EditText inputAdress ){
-       inputNomCompletFr.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.input_name));
-       inputNomCompletAr.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.input_name));
-       inputCin.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.input_name));
-       inputAdress.setBackground(ContextCompat.getDrawable(IdentificationPatient.this, R.drawable.input_name));
+       inputNomCompletFr.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.input_name));
+       inputNomCompletAr.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.input_name));
+       inputCin.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.input_name));
+       inputAdress.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.input_name));
    }
 
 }

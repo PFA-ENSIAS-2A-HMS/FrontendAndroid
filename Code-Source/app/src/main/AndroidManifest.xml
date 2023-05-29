@@ -40,7 +40,7 @@
             android:exported="false" />
         -->
         <activity
-            android:name=".SignInVet"
+            android:name=".SignInDoctor"
             android:exported="false" />
         <activity
             android:name=".InscriptionVet"
@@ -61,7 +61,7 @@
             android:name=".IdentificationSmsv2"
             android:exported="false" />
         <activity
-            android:name=".Attachs1"
+            android:name=".InsideApp"
             android:exported="false" />
         <activity
             android:name=".WelcomeBackAct"
@@ -73,7 +73,7 @@
             android:name=".SmsVerify"
             android:exported="false" />
         <activity
-            android:name=".IdentificationPatient"
+            android:name=".SignUpPatient"
             android:exported="false" />
         <activity
             android:name=".CinActivity"

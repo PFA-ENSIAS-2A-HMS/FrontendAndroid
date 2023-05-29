@@ -1,26 +1,21 @@
 package com.example.androidprojet;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.androidprojet.model.Eleveur;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class IdentificationSmsv2 extends AppCompatActivity {
@@ -99,7 +94,7 @@ public class IdentificationSmsv2 extends AppCompatActivity {
         buttonPrecedent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(IdentificationSmsv2.this, IdentificationPatient.class);
+                Intent intent= new Intent(IdentificationSmsv2.this, SignUpPatient.class);
                 startActivity(intent);
             }
         });

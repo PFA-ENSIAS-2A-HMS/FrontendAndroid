@@ -3,13 +3,9 @@ package com.example.androidprojet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
 import com.example.androidprojet.database.DatabaseHelper;
 import com.example.androidprojet.model.User;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,7 +30,7 @@ public class BackPage2Activity extends AppCompatActivity {
                     @Override
                     public void run() {
                         User user = databaseHelper.getUser();
-                        Intent intent = new Intent(BackPage2Activity.this, Attachs1.class);
+                        Intent intent = new Intent(BackPage2Activity.this, InsideApp.class);
                         intent.putExtra("login", user.getLogin());
                         intent.putExtra("password", user.getPassword());
                         intent.putExtra("role", user.getRole());

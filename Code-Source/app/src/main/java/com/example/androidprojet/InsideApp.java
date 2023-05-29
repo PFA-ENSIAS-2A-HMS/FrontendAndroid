@@ -30,7 +30,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.CountDownLatch;
 
-public class Attachs1 extends AppCompatActivity {
+public class InsideApp extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;//
     private String login;
     private String password;
@@ -83,7 +83,7 @@ public class Attachs1 extends AppCompatActivity {
         String apiUrl = "http://100.76.108.249:8000/api/v1/access-tokens";
         String requestBody = toJSON(user);
         ApiConnection apiConnection = new ApiConnection();
-        ProgressDialog progressDialog = new ProgressDialog(Attachs1.this);
+        ProgressDialog progressDialog = new ProgressDialog(InsideApp.this);
         progressDialog.setMessage("Chargement des données en cours...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -99,7 +99,7 @@ public class Attachs1 extends AppCompatActivity {
                         token = jsonObject.get("token").getAsString();
                     }
                     latch.countDown();
-                    Toast.makeText(Attachs1.this, "user is added in SQLite Database successfully (:", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InsideApp.this, "user is added in SQLite Database successfully (:", Toast.LENGTH_SHORT).show();
                 }else{
                     progressDialog.dismiss();
 
