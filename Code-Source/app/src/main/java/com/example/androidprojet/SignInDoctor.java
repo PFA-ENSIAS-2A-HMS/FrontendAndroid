@@ -40,13 +40,13 @@ public class SignInDoctor extends AppCompatActivity {
                     password.setBackground(ContextCompat.getDrawable(SignInDoctor.this, R.drawable.edittext_border));
                 }else{
                     //Toast.makeText(SignInDoctor.this, "login with success (:", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignInDoctor.this, InsideApp.class);
+                    Intent intent = new Intent(SignInDoctor.this, InsideAppPatient.class);
                     intent.putExtra("login",email);
                     intent.putExtra("password",pwd);
                     intent.putExtra("role","VETERINAIRE");
                     startActivity(intent);
                 }*/
-                startActivity(new Intent(SignInDoctor.this, InsideApp.class));
+                startActivity(new Intent(SignInDoctor.this, InsideAppDoctor.class));
             }
         });
     }

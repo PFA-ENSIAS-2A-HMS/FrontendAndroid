@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav"
+        app:menu="@menu/menu_patient"
         app:itemIconTint="@color/white"
         android:background="@color/precedentButtonColor"/>
 </RelativeLayout>

@@ -80,7 +80,7 @@ public class Pwdactivity extends AppCompatActivity {
                         public void onResponse(int Code,String response) {
                             if(Code==201){
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(Pwdactivity.this, InsideApp.class);
+                                Intent intent = new Intent(Pwdactivity.this, InsideAppPatient.class);
                                 intent.putExtra("login",eleveur.getPhoneNumber());
                                 intent.putExtra("password",eleveur.getPassword());
                                 intent.putExtra("role","breeder");
@@ -119,7 +119,7 @@ public class Pwdactivity extends AppCompatActivity {
 
                 }*/
 
-                startActivity(new Intent(Pwdactivity.this, InsideApp.class));
+                startActivity(new Intent(Pwdactivity.this, InsideAppPatient.class));
 
             }
         });

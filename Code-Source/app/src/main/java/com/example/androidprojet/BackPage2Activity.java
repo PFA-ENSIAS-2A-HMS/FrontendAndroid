@@ -30,7 +30,7 @@ public class BackPage2Activity extends AppCompatActivity {
                     @Override
                     public void run() {
                         User user = databaseHelper.getUser();
-                        Intent intent = new Intent(BackPage2Activity.this, InsideApp.class);
+                        Intent intent = new Intent(BackPage2Activity.this, InsideAppPatient.class);
                         intent.putExtra("login", user.getLogin());
                         intent.putExtra("password", user.getPassword());
                         intent.putExtra("role", user.getRole());
