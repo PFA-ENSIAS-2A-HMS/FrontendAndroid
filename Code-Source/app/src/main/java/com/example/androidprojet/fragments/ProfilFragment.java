@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -51,7 +53,9 @@ public class ProfilFragment extends Fragment {
     private ImageView logoutView;
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_profil, container, false);
     }
@@ -60,7 +64,7 @@ public class ProfilFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        logoutView = getActivity().findViewById(R.id.logout);
+        /*logoutView = getActivity().findViewById(R.id.logout);
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Deconnexion...");
         progressDialog.setCancelable(false);
@@ -85,7 +89,13 @@ public class ProfilFragment extends Fragment {
             profile_eleveur(view,apiConnection);
         }else{
             profile_veterinaire(view,apiConnection);
-        }
+        }*/
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     private void profile_eleveur(View view, ApiConnection apiConnection){

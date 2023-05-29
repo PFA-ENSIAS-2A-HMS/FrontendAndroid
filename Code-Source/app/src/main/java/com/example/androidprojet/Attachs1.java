@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.androidprojet.database.DatabaseHelper;
 import com.example.androidprojet.fragments.HomeFragment;
-import com.example.androidprojet.fragments.MessageFragment;
+import com.example.androidprojet.fragments.NotificationFragment;
 
-import com.example.androidprojet.fragments.NotifFragment;
+import com.example.androidprojet.fragments.DonneesBiometriquesFragment;
 import com.example.androidprojet.fragments.ProfilFragment;
 import com.example.androidprojet.model.User;
 import com.example.androidprojet.network.ApiConnection;
@@ -160,10 +160,10 @@ public class Attachs1 extends AppCompatActivity {
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_comite:
-                            selectedFragment = new NotifFragment();
+                            selectedFragment = new DonneesBiometriquesFragment();
                             break;
                         case R.id.nav_search:
-                            selectedFragment = new MessageFragment();
+                            selectedFragment = new NotificationFragment();
                             break;
                         case R.id.nav_profil:
                             selectedFragment = new ProfilFragment();
