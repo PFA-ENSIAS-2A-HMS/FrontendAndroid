@@ -113,7 +113,7 @@
                  android:layout_marginLeft="20dp"
                  android:layout_marginRight="20dp"
                  android:background="@drawable/getstarted_button"
-                 android:text="S'inscrire"
+                 android:text="Se connecter"
                  android:textAllCaps="false"
                  android:textColor="@color/white"
                  android:textSize="26sp"
