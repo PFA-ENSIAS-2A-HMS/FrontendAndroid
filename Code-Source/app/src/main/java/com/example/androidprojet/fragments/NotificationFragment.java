@@ -69,5 +69,4 @@ public class NotificationFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
 }
