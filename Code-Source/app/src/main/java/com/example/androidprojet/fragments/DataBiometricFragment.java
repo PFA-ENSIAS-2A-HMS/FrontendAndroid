@@ -53,6 +53,8 @@ public class DataBiometricFragment extends Fragment {
         databaseHelper = new DatabaseHelper(getContext());
         user = databaseHelper.getUser();
 
+        databaseHelper.updateUserByStatus(user.getLogin(), StatusDataBiometric.SUBMITTED);
+
         System.out.println("User status : "+user.getDataBiometric());
 
         View rootView = inflater.inflate(R.layout.fragment_data_biometric, container, false);
@@ -174,7 +176,6 @@ public class DataBiometricFragment extends Fragment {
 
                             if(Code==201){
                                 progressDialog.dismiss();
-                                user.setDataBiometric(StatusDataBiometric.SUBMITTED);
                                 /*Intent intent = new Intent(PasswordActivity.this, InsideAppPatient.class);
                                 intent.putExtra("login",patient.getPhoneNumber());
                                 intent.putExtra("password",patient.getPassword());
