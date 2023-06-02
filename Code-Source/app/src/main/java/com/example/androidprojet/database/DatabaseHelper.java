@@ -121,6 +121,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
+    public void updateUserByStatus(String login, StatusDataBiometric statusDataBiometric) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_STATUS_DATA, statusDataBiometric.ordinal());
+        db.update(TABLE_NAME, cv, COLUMN_LOGIN+"=?", new String[]{login});
+        db.close();
+    }
 
 }
