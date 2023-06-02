@@ -9,7 +9,7 @@ import java.io.IOException;
 import okhttp3.*;
 
 public class ApiConnection {
-    public static final String URL = "http://100.76.108.249:8000";
+    public static final String URL = "http://100.76.108.249:8080";
     public void getFromApi(String apiUrl, Callback callback) {
         OkHttpClient client = new OkHttpClient();
 
@@ -79,12 +79,12 @@ public class ApiConnection {
             @Override
             public void onResponse(Call call, Response response) {
                 try {
-                    byte[] imageBytes = response.body().bytes();
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    //byte[] imageBytes = response.body().bytes();
+                    //Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 
-                    callback.onImageDownloaded(bitmap);
+                    //callback.onImageDownloaded(bitmap);
                 } catch (Exception e) {
-                    callback.onError(0, e.getMessage());
+                    //callback.onError(0, e.getMessage());
                 }
             }
 

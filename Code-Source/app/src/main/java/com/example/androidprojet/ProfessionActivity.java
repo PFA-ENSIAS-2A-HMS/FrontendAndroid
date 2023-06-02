@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import com.example.androidprojet.model.Eleveur;
+import com.example.androidprojet.model.Patient;
 import com.example.androidprojet.model.Profil;
 
 public class ProfessionActivity extends AppCompatActivity {
-    private Eleveur eleveur;
+    private Patient patient;
     private Profil veterinaire;
     public ImageButton buttonEleveur;
     public ImageButton buttonVet;
@@ -22,9 +22,9 @@ public class ProfessionActivity extends AppCompatActivity {
         buttonEleveur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                eleveur = new Eleveur();
+                patient = new Patient();
                 Intent intent = new Intent(ProfessionActivity.this, SignUpPatient.class);
-                intent.putExtra("ELEVEUR_OBJECT", eleveur);
+                intent.putExtra("ELEVEUR_OBJECT", patient);
                 startActivity(intent);
             }
         });

@@ -1,6 +1,7 @@
 package com.example.androidprojet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,37 +9,39 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.example.androidprojet.model.Eleveur;
+import com.example.androidprojet.model.Patient;
 import com.google.android.material.imageview.ShapeableImageView;
-
 import java.io.IOException;
 
-public class IdentificationSmsv2 extends AppCompatActivity {
+public class SignUpPatientNext extends AppCompatActivity {
   public Button buttonSuivant, buttonPrecedent;
-  private EditText input_numero ;
-  private Eleveur eleveur ;
+  private EditText phoneNumber ;
+  private Patient patient;
   private String imagePath = "";
   private Bitmap bitmap;
   private  Bitmap bitmapCin;
   private static final int PICK_IMAGE_REQUEST = 1;
   private ShapeableImageView buttonimage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification_smsv2_old);
+        // Récuperer le patient
+        this.patient = getEleveur();
 
-        this.eleveur = getEleveur();
+        phoneNumber = findViewById(R.id.input_numero);
         buttonSuivant = (Button) findViewById(R.id.bouttonSuivant);
         buttonPrecedent = (Button) findViewById(R.id.precedentBouton);
-        input_numero = findViewById(R.id.input_numero);
+
         // acces a la galerie
         buttonimage = findViewById(R.id.imvCircularWithStroke);
-        buttonimage.setOnClickListener(new View.OnClickListener() {
+        /*buttonimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Créer une intention pour ouvrir la galerie de photos
@@ -46,27 +49,27 @@ public class IdentificationSmsv2 extends AppCompatActivity {
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
-        });
+        });*/
 
         buttonSuivant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //String numero = input_numero.getText().toString();
-                // definir le numero de l'eleveur
-                //eleveur.setPhoneNumber(numero);
-                //eleveur.setProfile(imagePath);
-                /*if(imagePath.equals("")){
-                    Toast.makeText(IdentificationSmsv2.this, "the image field is required !", Toast.LENGTH_SHORT).show();
-                }else if(numero.equals("")){
-                    input_numero.setBackground(ContextCompat.getDrawable(IdentificationSmsv2.this, R.drawable.edittext_border));
-                    Toast.makeText(IdentificationSmsv2.this, "the number field is required !", Toast.LENGTH_SHORT).show();
-                }else{
-                    eleveur.setPhoneNumber(numero);
-                    eleveur.setProfile(imagePath);
-                    Intent intent= new Intent(IdentificationSmsv2.this,Pwdactivity.class);
-                    intent.putExtra("eleveur", eleveur);
+                String numero = phoneNumber.getText().toString();
 
-                    File directory = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "VotreDossier");
+                /*if(imagePath.equals("")){
+                    Toast.makeText(SignUpPatientNext.this, "the image field is required !", Toast.LENGTH_SHORT).show();
+                }else*/
+                if(numero.equals("")){
+                    phoneNumber.setBackground(ContextCompat.getDrawable(SignUpPatientNext.this, R.drawable.edittext_border));
+                    Toast.makeText(SignUpPatientNext.this, "Le champ numéro de téléphone est requis !", Toast.LENGTH_SHORT).show();
+                }else{
+                    patient.setPhoneNumber(numero);
+                    //patient.setProfile(imagePath);
+
+                    Intent intent= new Intent(SignUpPatientNext.this, PasswordActivity.class);
+                    intent.putExtra("patient", patient);
+
+                    /*File directory = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "VotreDossier");
                     if (!directory.exists()) {
                         directory.mkdirs();
                     }
@@ -83,26 +86,26 @@ public class IdentificationSmsv2 extends AppCompatActivity {
 
                     intent.putExtra("profilePath", file.getAbsolutePath());
                     String cinPath = getIntent().getStringExtra("cinPath");
-                    intent.putExtra("cinPath", cinPath);
+                    intent.putExtra("cinPath", cinPath);*/
 
                     startActivity(intent);
-                }*/
-                startActivity(new Intent(IdentificationSmsv2.this,Pwdactivity.class));
+                }
+                //startActivity(new Intent(SignUpPatientNext.this, PasswordActivity.class));
             }
         });
 
         buttonPrecedent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(IdentificationSmsv2.this, SignUpPatient.class);
+                Intent intent= new Intent(SignUpPatientNext.this, SignUpPatient.class);
                 startActivity(intent);
             }
         });
     }
-    public Eleveur getEleveur(){
+    public Patient getEleveur(){
         Intent intent = getIntent();
-        Eleveur eleveur = (Eleveur) intent.getSerializableExtra("eleveur");
-        return eleveur;
+        Patient patient = (Patient) intent.getSerializableExtra("patient");
+        return patient;
     }
     // Recevoir les résultats de l'intention pour sélectionner une photo
     @Override
