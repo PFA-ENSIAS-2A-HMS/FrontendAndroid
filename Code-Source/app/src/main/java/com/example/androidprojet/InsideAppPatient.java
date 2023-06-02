@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.androidprojet.database.DatabaseHelper;
+import com.example.androidprojet.enums.StatusDataBiometric;
 import com.example.androidprojet.fragments.HomeFragment;
 import com.example.androidprojet.fragments.NotificationFragment;
 
@@ -36,16 +37,16 @@ public class InsideAppPatient extends AppCompatActivity {
     private String password;
     private String role;
     private String token;
+    private StatusDataBiometric statusDataBiometric;
     private DatabaseHelper databaseHelper;
     //boolean isAuthenticated = false;
     private String isAuthenticated = "";
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attachs1);
-
-
 
         recupererData();
 
@@ -67,20 +68,25 @@ public class InsideAppPatient extends AppCompatActivity {
             //Toast.makeText(this, ""+login, Toast.LENGTH_SHORT).show();
             password = intent.getStringExtra("password");
             role = intent.getStringExtra("role");
-            if(intent.hasExtra("isAthenticated")){
+            statusDataBiometric = StatusDataBiometric.NOT_SUBMITTED;
+            /*if(intent.hasExtra("isAthenticated")){
                 isAuthenticated = intent.getStringExtra("isAthenticated");
             }
             
             databaseHelper = new DatabaseHelper(this);
             if (login != null && password != null && role != null && !isAuthenticated.equals("true")){
                 login(new User(login,password,role,""));
+            }*/
+            databaseHelper = new DatabaseHelper(this);
+            if (login != null && password != null && role != null){
+               login(new User(login,password,role,"", StatusDataBiometric.NOT_SUBMITTED));
             }
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void login(User user){
-        String apiUrl = "http://100.76.108.249:8000/api/v1/access-tokens";
+        /*String apiUrl = "http://100.76.108.249:8000/api/v1/access-tokens";
         String requestBody = toJSON(user);
         ApiConnection apiConnection = new ApiConnection();
         ProgressDialog progressDialog = new ProgressDialog(InsideAppPatient.this);
@@ -133,8 +139,9 @@ public class InsideAppPatient extends AppCompatActivity {
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        databaseHelper.addUser(login, password, role,token);
+        }*/
+        databaseHelper.addUser(login, password, role,token, statusDataBiometric);
+        //Toast.makeText(InsideAppPatient.this, "user is added in SQLite Database successfully (:", Toast.LENGTH_SHORT).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -143,7 +150,7 @@ public class InsideAppPatient extends AppCompatActivity {
         try {
             json.put("login", user.getLogin());
             json.put("password",user.getPassword());
-            json.put("role","breeder");
+            json.put("role","patient");
         }catch (JSONException e) {
         e.printStackTrace();
         }
@@ -153,7 +160,7 @@ public class InsideAppPatient extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+                    Fragment selectedFragment = new HomeFragment();
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:

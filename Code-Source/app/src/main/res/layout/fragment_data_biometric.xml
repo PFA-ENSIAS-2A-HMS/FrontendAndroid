@@ -8,7 +8,7 @@
     android:background="#D9D9D9">
 
     <ImageView
-        android:id="@+id/imagepwarning"
+        android:id="@+id/iconSend"
         android:layout_width="190dp"
         android:layout_height="197dp"
         android:layout_marginTop="4dp"
@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagepwarning" />
+        app:layout_constraintTop_toBottomOf="@+id/iconSend" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -82,6 +82,13 @@
                 android:text="Taille (cm)"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="20sp"></TextView>
 
         </LinearLayout>
 
@@ -96,7 +103,7 @@
 
 
         <EditText
-            android:id="@+id/input_nom"
+            android:id="@+id/poids_patient"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
@@ -109,7 +116,7 @@
             android:background="@drawable/border_item"/>
 
         <EditText
-            android:id="@+id/input_prenom"
+            android:id="@+id/taille_patient"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
@@ -215,7 +222,7 @@
             android:autofillHints="tension"
             android:background="@drawable/border_item"
             android:hint="00/00"
-            android:inputType="number"
+            android:inputType="text"
             android:textAlignment="center" />
 
     </LinearLayout>
@@ -312,7 +319,7 @@
             android:autofillHints="glycemie"
             android:background="@drawable/border_item"
             android:hint="00/00"
-            android:inputType="number"
+            android:inputType="text"
             android:textAlignment="center" />
 
     </LinearLayout>

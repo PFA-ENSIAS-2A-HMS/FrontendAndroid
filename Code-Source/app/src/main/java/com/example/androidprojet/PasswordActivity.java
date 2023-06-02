@@ -3,47 +3,52 @@ package com.example.androidprojet;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.androidprojet.model.Eleveur;
+import com.example.androidprojet.model.Patient;
+import com.example.androidprojet.network.ApiConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 
-public class Pwdactivity extends AppCompatActivity {
+public class PasswordActivity extends AppCompatActivity {
     public Button buttonEnregistrer;
     private EditText pwd_input ;
     private EditText pwd_confirmation_input;
-    private Eleveur eleveur;
+    private Patient patient;
     private Bitmap bitmap;
     TextView textView ;
     private  Bitmap bitmapCin;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pwdactivity);
-        eleveur = getEleveur();
+
+        patient = getEleveur();
+
         buttonEnregistrer = (Button) findViewById(R.id.enregistrerButton);
-        pwd_input=findViewById(R.id.pwd_input);
+        pwd_input = findViewById(R.id.pwd_input);
         pwd_confirmation_input = findViewById(R.id.pwd_confirmation);
-        // Récupérer l'objet Eleveur de l'intention
-        eleveur = (Eleveur) getIntent().getSerializableExtra("eleveur");
-        bitmap = getIntent().getParcelableExtra("bitmap");
+
+        //Récupérer l'objet Patient de l'intention
+        //patient = (Patient) getIntent().getSerializableExtra("patient");
+        //bitmap = getIntent().getParcelableExtra("bitmap");
 
         buttonEnregistrer.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -51,25 +56,26 @@ public class Pwdactivity extends AppCompatActivity {
             public void onClick(View view) {
                 String pwd = pwd_input.getText().toString();
                 String pwd_confirmation  = pwd_confirmation_input.getText().toString();
-                /*if(pwd.equals("")){
-                    Toast.makeText(Pwdactivity.this, "the password field is required !", Toast.LENGTH_SHORT).show();
-                    pwd_input.setBackground(ContextCompat.getDrawable(Pwdactivity.this, R.drawable.edittext_border));
-
+                if(pwd.equals("")){
+                    Toast.makeText(PasswordActivity.this, "Le champ mot de passe est requis !", Toast.LENGTH_SHORT).show();
+                    pwd_input.setBackground(ContextCompat.getDrawable(PasswordActivity.this, R.drawable.edittext_border));
                 }else if(pwd_confirmation.equals("")){
-                    Toast.makeText(Pwdactivity.this, "the password confirmation field is required !", Toast.LENGTH_SHORT).show();
-                    pwd_confirmation_input.setBackground(ContextCompat.getDrawable(Pwdactivity.this, R.drawable.edittext_border));
-
+                    Toast.makeText(PasswordActivity.this, "Le champ de confirmation du mot de passe est requis !", Toast.LENGTH_SHORT).show();
+                    pwd_confirmation_input.setBackground(ContextCompat.getDrawable(PasswordActivity.this, R.drawable.edittext_border));
                 }else if(!pwd.equals(pwd_confirmation)){
-                    Toast.makeText(Pwdactivity.this, "The password and the confirmation do not match.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PasswordActivity.this, "Le mot de passe et la confirmation ne correspondent pas !", Toast.LENGTH_SHORT).show();
                 }else{
-                    eleveur.setPassword(pwd);
+                    patient.setPassword(pwd);
 
-                    String apiUrl = ApiConnection.URL+"/api/v1/breeders/";
+                    String apiUrl = ApiConnection.URL+"/api/v1/patients/1";
                     String requestBody = toJSON();
 
+                    //Toast.makeText(PasswordActivity.this, requestBody, Toast.LENGTH_SHORT).show();
                     ApiConnection apiConnection = new ApiConnection();
 
-                    ProgressDialog progressDialog = new ProgressDialog(Pwdactivity.this);
+                    System.out.println("Patient: " +requestBody);
+
+                    ProgressDialog progressDialog = new ProgressDialog(PasswordActivity.this);
                     progressDialog.setMessage("création en cours...");
                     progressDialog.setCancelable(false);
                     progressDialog.show();
@@ -78,24 +84,28 @@ public class Pwdactivity extends AppCompatActivity {
                     apiConnection.postToApi(apiUrl, requestBody, new ApiConnection.Callback() {
                         @Override
                         public void onResponse(int Code,String response) {
+
                             if(Code==201){
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(Pwdactivity.this, InsideAppPatient.class);
-                                intent.putExtra("login",eleveur.getPhoneNumber());
-                                intent.putExtra("password",eleveur.getPassword());
-                                intent.putExtra("role","breeder");
+                                Intent intent = new Intent(PasswordActivity.this, InsideAppPatient.class);
+                                intent.putExtra("login",patient.getPhoneNumber());
+                                intent.putExtra("password",patient.getPassword());
+                                intent.putExtra("role","patient");
                                 startActivity(intent);
+                                //startActivity(new Intent(PasswordActivity.this, SignInPatient.class));
+
                             }else{
                                 progressDialog.dismiss();
 
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        final String errorMessage = "Erreur interne du serveur";
+                                        final String errorMessage = "Akhna";
                                         showDialogBox(errorMessage);
                                     }
                                 });
                             }
+
                         }
                         @Override
                         public void onError(int Code,String error) {
@@ -117,9 +127,9 @@ public class Pwdactivity extends AppCompatActivity {
 
                     });
 
-                }*/
+                }
 
-                startActivity(new Intent(Pwdactivity.this, InsideAppPatient.class));
+                //startActivity(new Intent(PasswordActivity.this, InsideAppPatient.class));
 
             }
         });
@@ -139,20 +149,28 @@ public class Pwdactivity extends AppCompatActivity {
         dialog.show();
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.O)
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String toJSON() {
+        // Création d'un objet JSON
         JSONObject json = new JSONObject();
-
         try {
-            json.put("fullNameFr", eleveur.getFullNameFr());
-            json.put("fullNameAr", eleveur.getFullNameAr());
-            json.put("cin", eleveur.getCin());
-            json.put("address", eleveur.getAddress());
-            json.put("gender", eleveur.getGender());
-            json.put("phoneNumber", eleveur.getPhoneNumber());
+            json.put("firstName", patient.getFirstName());
+            json.put("phoneNumber", patient.getPhoneNumber());
+            json.put("email", "");
+            json.put("lastName", patient.getLastName());
+            json.put("date_of_birth", patient.getBirthdate());
+            json.put("image_url", "https://example.com/image.jpg");
+            json.put("role", "PATIENT");
+            json.put("password", patient.getPassword());
+            json.put("gender", patient.getGender());
+            json.put("cin", patient.getCin());
+            //json.put("address", patient.getAddress());
+            json.put("emergencyContact", patient.getPhoneNumber());
+            json.put("MedicalHistory", "aucune pour le moment");
+            json.put("status", "PENDING");
 
-            String imagePath = getIntent().getStringExtra("profilePath");
+
+            /*String imagePath = getIntent().getStringExtra("profilePath");
 
             if (imagePath != null) {
                 bitmap = BitmapFactory.decodeFile(imagePath);
@@ -183,17 +201,11 @@ public class Pwdactivity extends AppCompatActivity {
                 String base64Image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
                 json.put("cin_path", base64Image);
 
-            }
-
-
-            json.put("password", eleveur.getPassword());
-
-
+            }*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return json.toString();
-
     }
 
     private byte[] convertImageToByteArray(Bitmap image) {
@@ -202,9 +214,9 @@ public class Pwdactivity extends AppCompatActivity {
         return stream.toByteArray();
     }
 
-    public Eleveur getEleveur(){
+    public Patient getEleveur(){
         Intent intent = getIntent();
-        Eleveur eleveur = (Eleveur) intent.getSerializableExtra("eleveur");
-        return eleveur;
+        Patient patient = (Patient) intent.getSerializableExtra("patient");
+        return patient;
     }
 }

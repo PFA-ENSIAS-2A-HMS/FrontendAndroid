@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.androidprojet.enums.StatusDataBiometric;
 import com.example.androidprojet.model.User;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -17,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_ROLE = "role";
     private static final String COLUMN_TOKEN = "token";
+    private static final String COLUMN_STATUS_DATA = "statusDataBiometric";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,7 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_LOGIN + " TEXT,"
                 + COLUMN_PASSWORD + " TEXT,"
                 + COLUMN_ROLE + " TEXT,"
-                + COLUMN_TOKEN + " TEXT"
+                + COLUMN_TOKEN+ " TEXT,"
+                + COLUMN_STATUS_DATA + " INTEGER"
                 + ")";
         db.execSQL(createTableQuery);
     }
@@ -38,13 +41,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addUser(String login, String password, String role,String token) {
+    public void addUser(String login, String password, String role, String token, StatusDataBiometric statusDataBiometric) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGIN, login);
         values.put(COLUMN_PASSWORD, password);
         values.put(COLUMN_ROLE, role);
         values.put(COLUMN_TOKEN,token);
+        values.put(COLUMN_STATUS_DATA, statusDataBiometric.ordinal());
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
@@ -60,7 +64,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String role = cursor.getString(idx_role);
             int idx_token = cursor.getColumnIndex(COLUMN_TOKEN);
             String token = cursor.getString(idx_token);
-            user = new User(login, password, role,token);
+            int idx_status = cursor.getColumnIndex(COLUMN_STATUS_DATA);
+            int statusOrdinal = cursor.getInt(idx_status);
+            StatusDataBiometric statusDataBiometric = StatusDataBiometric.values()[statusOrdinal]; // Map the ordinal value back to the enum
+
+            user = new User(login, password, role, token, statusDataBiometric);
         }
 
         cursor.close();
@@ -96,7 +104,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String role = cursor.getString(idx_role);
             int idx_token = cursor.getColumnIndex(COLUMN_TOKEN);
             String token = cursor.getString(idx_token);
-            user = new User(login, password, role, token);
+            int idx_status = cursor.getColumnIndex(COLUMN_STATUS_DATA);
+            int statusOrdinal = cursor.getInt(idx_status);
+            StatusDataBiometric statusDataBiometric = StatusDataBiometric.values()[statusOrdinal]; // Map the ordinal value back to the enum
+
+            user = new User(login, password, role, token, statusDataBiometric);
         }
         cursor.close();
         db.close();

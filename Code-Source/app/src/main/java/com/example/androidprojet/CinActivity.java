@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.androidprojet.model.Eleveur;
+import com.example.androidprojet.model.Patient;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,7 +24,7 @@ import java.io.IOException;
 
 public class CinActivity extends AppCompatActivity {
 
-    private Eleveur receivedEleveur;
+    private Patient receivedPatient;
     public Button precedentButton;
     public ImageButton cameraButton;
 
@@ -46,9 +46,9 @@ public class CinActivity extends AppCompatActivity {
 
         alertPictureCin.setVisibility(View.GONE);
         Intent intent = getIntent();
-        receivedEleveur = (Eleveur)intent.getSerializableExtra("ELEVEUR_OBJECT");
-        if (receivedEleveur == null) {
-                System.out.println("Error : Object doen't 'Eleveur'\n");
+        receivedPatient = (Patient)intent.getSerializableExtra("ELEVEUR_OBJECT");
+        if (receivedPatient == null) {
+                System.out.println("Error : Object doen't 'Patient'\n");
         }
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,12 +66,12 @@ public class CinActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        suivantButton.setOnClickListener(new View.OnClickListener() {
+        /*suivantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(receivedEleveur.getCinPath() != null){
+                if(receivedPatient.getCinPath() != null){
                     Intent intent = new Intent(CinActivity.this, SignUpPatient.class);
-                    intent.putExtra("eleveur", receivedEleveur);
+                    intent.putExtra("eleveur", receivedPatient);
 
                     ProgressDialog progressDialog = new ProgressDialog(CinActivity.this);
                     progressDialog.setMessage("veuillez patienter...");
@@ -100,25 +100,25 @@ public class CinActivity extends AppCompatActivity {
                     Toast.makeText(CinActivity.this, "You should upload your cin picture !", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        /*if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 imagePath = uri.getPath();
                 cameraButton.setImageBitmap(bitmap);
-                receivedEleveur.setCinPath(imagePath);
+                receivedPatient.setCinPath(imagePath);
                 alertPictureCin.setVisibility(View.VISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }

@@ -78,24 +78,26 @@
         app:layout_constraintTop_toBottomOf="@id/profile_picture_frame">
 
         <EditText
-            android:id="@+id/nameFR"
+            android:id="@+id/NameProfil"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:autofillHints="name"
+            android:hint="Nom et Prénom"
             android:background="@drawable/shadow_bottom"
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textSize="13dp"/>
 
         <EditText
-            android:id="@+id/nameAR"
+            android:id="@+id/cinProfil"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:autofillHints="name"
+            android:hint="C.I.N"
             android:background="@drawable/shadow_bottom"
             android:inputType="textPersonName"
             android:textAlignment="center"
@@ -117,12 +119,13 @@
         app:layout_constraintTop_toBottomOf="@id/linear_layout1">
 
         <EditText
-            android:id="@+id/addresse"
+            android:id="@+id/addressProfil"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:autofillHints="name"
+            android:hint="Adresse"
             android:background="@drawable/shadow_bottom"
             android:inputType="textPersonName"
             android:textAlignment="center"
@@ -135,6 +138,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:autofillHints="name"
+            android:hint="Téléphone"
             android:background="@drawable/shadow_bottom"
             android:inputType="textPersonName"
             android:textAlignment="center"
@@ -156,13 +160,13 @@
         app:layout_constraintTop_toBottomOf="@id/linear_layout2">
 
         <EditText
-            android:id="@+id/cin"
+            android:id="@+id/bloodTypeProfil"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:autofillHints="name"
-            android:hint="Mot de passe"
+            android:hint="Type sanguin"
             android:background="@drawable/shadow_bottom"
             android:inputType="textPersonName"
             android:textAlignment="center"
@@ -170,7 +174,7 @@
             android:textSize="13dp"/>
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/passwordProfil"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
@@ -258,7 +262,7 @@
             app:layout_constraintVertical_bias="0.139" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/textViewlogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

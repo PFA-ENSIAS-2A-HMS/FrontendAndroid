@@ -303,7 +303,7 @@
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:onClick="showDatePicker"
-                android:hint="JJ/MM/AAAA"
+                android:hint="AAAA-MM-JJ"
                 android:textSize="14dp"/>
 
         </LinearLayout>

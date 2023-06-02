@@ -31,6 +31,14 @@ public class ListPatients extends Fragment {
             new FireBaseUser("Mouad Kabouri", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.a),
             new FireBaseUser("Mouad Lakouz", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.anonyme),
             new FireBaseUser("Mouad Obaha", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.a),
+            new FireBaseUser("Mouad ohassan", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.anonyme),
+            new FireBaseUser("Mouad Kabouri", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.a),
+            new FireBaseUser("Mouad Lakouz", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.anonyme),
+            new FireBaseUser("Mouad Obaha", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.a),
+            new FireBaseUser("Mouad ohassan", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.anonyme),
+            new FireBaseUser("Mouad Kabouri", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.a),
+            new FireBaseUser("Mouad Lakouz", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.anonyme),
+            new FireBaseUser("Mouad Obaha", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.a),
             new FireBaseUser("Mouad ohassan", "06554028374", "pass12", "KZIEU3920URHFEEDDED", R.drawable.anonyme)
     ));
 

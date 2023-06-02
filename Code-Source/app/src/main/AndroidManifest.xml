@@ -25,15 +25,15 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="31">
         <activity
+            android:name=".SignInPatient"
+            android:exported="false" />
+        <activity
             android:name=".TraitementPrescrit"
             android:exported="false"
             android:label="@string/title_activity_traitement_prescrit"
             android:theme="@style/Theme.AndroidProjet.NoActionBar" />
         <activity
             android:name=".ListSpecialiste"
-            android:exported="false" />
-        <activity
-            android:name=".UsersActivity"
             android:exported="false" />
         <activity
             android:name=".InsideAppDoctor"
@@ -43,28 +43,11 @@
             android:exported="false"
             android:label="@string/title_activity_back_page2"
             android:theme="@style/Theme.AndroidProjet.NoActionBar" />
-        <!--
-         <activity
-            android:name=".ChatActivity"
-            android:exported="false" />
-        -->
         <activity
             android:name=".SignInDoctor"
             android:exported="false" />
         <activity
-            android:name=".InscriptionVet"
-            android:exported="false" />
-
-        <receiver
-            android:name=".OTP_Receiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name=".IdentificationSmsv2"
+            android:name=".SignUpPatientNext"
             android:exported="false" />
         <activity
             android:name=".InsideAppPatient"
@@ -73,10 +56,7 @@
             android:name=".WelcomeBackAct"
             android:exported="false" />
         <activity
-            android:name=".Pwdactivity"
-            android:exported="false" />
-        <activity
-            android:name=".SmsVerify"
+            android:name=".PasswordActivity"
             android:exported="false" />
         <activity
             android:name=".SignUpPatient"

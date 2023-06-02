@@ -1,6 +1,7 @@
 package com.example.androidprojet.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -39,6 +40,7 @@ import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -50,7 +52,7 @@ public class ProfilFragment extends Fragment {
     private User user;
     private String profile;
     private TextView displayRole;
-    private ImageView logoutView;
+    private TextView logoutView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -64,7 +66,7 @@ public class ProfilFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*logoutView = getActivity().findViewById(R.id.logout);
+        logoutView = getActivity().findViewById(R.id.textViewlogout);
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Deconnexion...");
         progressDialog.setCancelable(false);
@@ -85,10 +87,11 @@ public class ProfilFragment extends Fragment {
         ApiConnection apiConnection = new ApiConnection();
         databaseHelper = new DatabaseHelper(getContext());
         user = databaseHelper.getUser();
-        if(user.getRole().equals("breeder")){
-            profile_eleveur(view,apiConnection);
-        }else{
-            profile_veterinaire(view,apiConnection);
+        //Toast.makeText(getContext(), ""+user.getLogin(), Toast.LENGTH_SHORT).show();
+        if(user.getRole().equals("patient")){
+            profile_patient(view,apiConnection);
+        }/*else{
+            //profile_veterinaire(view,apiConnection);
         }*/
     }
 
@@ -98,48 +101,59 @@ public class ProfilFragment extends Fragment {
         super.onCreateOptionsMenu(menu,inflater);
     }
 
-    private void profile_eleveur(View view, ApiConnection apiConnection){
+    private void profile_patient(View view, ApiConnection apiConnection){
         displayRole = getActivity().findViewById(R.id.textView4);
-        displayRole.setText(user.getRole().equals("breeder") ? "éleveur":  "vétérinaire");
+        displayRole.setText(user.getRole().equals("patient") ? "Patient":  "Médecin");
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Chargement des données en cours...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/breeders?phoneNumber[eq]="+user.getLogin(), new ApiConnection.Callback() {
+        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/patients/phone/"+user.getLogin(), new ApiConnection.Callback() {
 
             @Override
             public void onResponse(int code, String response) {
-
-
                 try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    JsonNode jsonResponse = objectMapper.readTree(response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    System.out.println(response);
 
-                    JsonNode dataArray = jsonResponse.get("data");
-                    if (dataArray.isArray() && dataArray.size() > 0) {
-                        JsonNode firstObject = dataArray.get(0);
-                        String fullNameFr = firstObject.get("fullNameFr").asText();
-                        String fullNameAr = firstObject.get("fullNameAr").asText();
-                        String cin = firstObject.get("cin").asText();
-                        String address = firstObject.get("address").asText();
-                        String birthdate = firstObject.get("birthdate").asText();
-                        String gender = firstObject.get("gender").asText();
-                        String phoneNumber = firstObject.get("phoneNumber").asText();
-                        String city = firstObject.get("city").asText();
-                        profile = firstObject.get("profile").asText();
-                        EditText nameFR = view.findViewById(R.id.nameFR);
-                        nameFR.setText(fullNameFr);
-                        EditText nameAR = view.findViewById(R.id.nameAR);
-                        nameAR.setText(fullNameAr);
-                        EditText addresse = view.findViewById(R.id.addresse);
-                        addresse.setText(address);
+                    if (jsonObject != null) {
+                        String firstName = jsonObject.getString("firstName");
+                        String lastName = jsonObject.getString("lastName");
+                        String cin = jsonObject.getString("cin");
+                        String address = jsonObject.getString("address");
+                        String phoneNumber = jsonObject.getString("phoneNumber");
+                        String bloodTypeProfil = jsonObject.getString("bloodType");
+                        String password = jsonObject.getString("password");
+
+                        String imageUrl = jsonObject.getString("image_url");
+
+                        EditText NameProfil = view.findViewById(R.id.NameProfil);
+                        NameProfil.setText(lastName +" "+ firstName);
+                        EditText cinProfil = view.findViewById(R.id.cinProfil);
+                        cinProfil.setText(cin);
+                        EditText addresse = view.findViewById(R.id.addressProfil);
+                        if(address.equals("null")) {
+                            addresse.setText("Votre adresse ?");
+                        }else {
+                            addresse.setText(address);
+                        }
                         EditText telephone = view.findViewById(R.id.phoneNumber);
                         telephone.setText(phoneNumber);
-                        EditText CIN = view.findViewById(R.id.cin);
-                        CIN.setText(cin);
-                        progressDialog.dismiss();
+                        EditText bloodType = view.findViewById(R.id.bloodTypeProfil);
+                        if(bloodTypeProfil.equals("null")){
+                            bloodType.setText("Type sanguin ?");
+                        }else {
+                            bloodType.setText(bloodTypeProfil);
+                        }
+                        EditText passwordP = view.findViewById(R.id.passwordProfil);
+                        passwordP.setText(password);
 
-                        String imageUrl = ApiConnection.URL+"/"+profile;
+                        ProgressBar loadingProgress = view.findViewById(R.id.loading_progress);
+
+                        progressDialog.dismiss();
+                        loadingProgress.setVisibility(View.GONE);
+
+                        /*String imageUrl = ApiConnection.URL+"/"+profile;
                         apiConnection.downloadImageFromApi(imageUrl, new ApiConnection.Callback() {
                             @Override
                             public void onResponse(int code, String response) {
@@ -160,12 +174,12 @@ public class ProfilFragment extends Fragment {
                                     }
                                 });
                             }
-                        });
+                        });*/
 
 
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
 
             }
@@ -182,7 +196,7 @@ public class ProfilFragment extends Fragment {
         });
 
     }
-    private void profile_veterinaire(View view, ApiConnection apiConnection){
+    /*private void profile_veterinaire(View view, ApiConnection apiConnection){
         displayRole = getActivity().findViewById(R.id.textView4);
         displayRole.setText(user.getRole().equals("breeder") ? "éleveur":  "vétérinaire");
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
@@ -260,7 +274,7 @@ public class ProfilFragment extends Fragment {
             }
         });
 
-    }
+    }*/
 
 
 
