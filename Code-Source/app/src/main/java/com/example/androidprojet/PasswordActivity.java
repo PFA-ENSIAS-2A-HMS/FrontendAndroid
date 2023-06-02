@@ -100,7 +100,7 @@ public class PasswordActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        final String errorMessage = "Akhna";
+                                        final String errorMessage = "Une erreur est survenue !";
                                         showDialogBox(errorMessage);
                                     }
                                 });
@@ -113,7 +113,7 @@ public class PasswordActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    final String errorMessage = "Une erreur est survenue";
+                                    final String errorMessage = "Une erreur est survenue !";
                                     showDialogBox(errorMessage);
                                 }
 

@@ -1,6 +1,7 @@
 package com.example.androidprojet.fragments;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -52,10 +54,6 @@ public class DataBiometricFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         databaseHelper = new DatabaseHelper(getContext());
         user = databaseHelper.getUser();
-
-        databaseHelper.updateUserByStatus(user.getLogin(), StatusDataBiometric.SUBMITTED);
-
-        System.out.println("User status : "+user.getDataBiometric());
 
         View rootView = inflater.inflate(R.layout.fragment_data_biometric, container, false);
 
@@ -162,57 +160,103 @@ public class DataBiometricFragment extends Fragment {
 
                     String apiUrl = ApiConnection.URL+"/api/v1/biometrics/phone/"+user.getLogin();
                     String requestBody = toJSON();
-                    Toast.makeText(getActivity(), requestBody, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), requestBody, Toast.LENGTH_SHORT).show();
 
                     ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                    progressDialog.setMessage("Envoi en cours...");
+
+                    if(user.getDataBiometric() == StatusDataBiometric.NOT_SUBMITTED) {
+                        progressDialog.setMessage("Envoi en cours...");
+                    }else {
+                        progressDialog.setMessage("Enregistrement en cours...");
+                    }
                     progressDialog.setCancelable(false);
                     progressDialog.show();
 
+                    if(user.getDataBiometric() == StatusDataBiometric.NOT_SUBMITTED) {
+                        apiConnection.postToApi(apiUrl, requestBody, new ApiConnection.Callback() {
+                            @Override
+                            public void onResponse(int Code,String response) {
 
-                    apiConnection.postToApi(apiUrl, requestBody, new ApiConnection.Callback() {
-                        @Override
-                        public void onResponse(int Code,String response) {
-
-                            if(Code==201){
-                                progressDialog.dismiss();
+                                if(Code==201){
+                                    progressDialog.dismiss();
+                                    databaseHelper.updateUserByStatus(user.getLogin(), StatusDataBiometric.SUBMITTED);
                                 /*Intent intent = new Intent(PasswordActivity.this, InsideAppPatient.class);
                                 intent.putExtra("login",patient.getPhoneNumber());
                                 intent.putExtra("password",patient.getPassword());
                                 intent.putExtra("role","patient");
                                 startActivity(intent);*/
-                                //startActivity(new Intent(PasswordActivity.this, SignInPatient.class));
+                                    //startActivity(new Intent(PasswordActivity.this, SignInPatient.class));
 
-                            }else{
-                                progressDialog.dismiss();
+                                }else{
+                                    progressDialog.dismiss();
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            final String errorMessage = "Une erreur est survenue !";
+                                            showDialogBox(errorMessage);
+                                        }
+                                    }).start();
 
-                                /*runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        final String errorMessage = "Akhna";
-                                    }
-                                });*/
-                            }
-
-                        }
-                        @Override
-                        public void onError(int Code,String error) {
-                            progressDialog.dismiss();
-                            /*runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    final String errorMessage = "Une erreur est survenue";
                                 }
 
-                            });*/
-                        }
+                            }
+                            @Override
+                            public void onError(int Code,String error) {
+                                progressDialog.dismiss();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        final String errorMessage = "Une erreur est survenue !";
+                                        showDialogBox(errorMessage);
+                                    }
+                                }).start();
+                            }
 
-                        @Override
-                        public void onImageDownloaded(Bitmap image) {
+                            @Override
+                            public void onImageDownloaded(Bitmap image) {
 
-                        }
+                            }
 
-                    });
+                        });
+                    }else {
+                        apiConnection.putToApi(apiUrl, requestBody, new ApiConnection.Callback() {
+                            @Override
+                            public void onResponse(int Code,String response) {
+
+                                if(Code==200){
+                                    progressDialog.dismiss();
+                                }else{
+                                    progressDialog.dismiss();
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            final String errorMessage = "Une erreur est survenue !";
+                                            showDialogBox(errorMessage);
+                                        }
+                                    }).start();
+
+                                }
+
+                            }
+                            @Override
+                            public void onError(int Code,String error) {
+                                progressDialog.dismiss();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        final String errorMessage = "Une erreur est survenue !";
+                                        showDialogBox(errorMessage);
+                                    }
+                                }).start();
+                            }
+
+                            @Override
+                            public void onImageDownloaded(Bitmap image) {
+
+                            }
+
+                        });
+                    }
                 }
             }
         });
@@ -247,6 +291,19 @@ public class DataBiometricFragment extends Fragment {
             e.printStackTrace();
         }
         return json.toString();
+    }
+
+    public void showDialogBox(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Erreur")
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
 

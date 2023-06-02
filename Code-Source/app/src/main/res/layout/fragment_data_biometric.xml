@@ -355,7 +355,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout10"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="4dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -368,7 +368,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:text="champ(s) obligatoire(s)"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
