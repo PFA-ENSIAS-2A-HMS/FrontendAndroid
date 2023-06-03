@@ -7,12 +7,24 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.androidprojet.model.Patient;
+import com.example.androidprojet.network.ApiConnection;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class SignUpPatient extends AppCompatActivity {
     private Patient patient;
@@ -25,21 +37,70 @@ public class SignUpPatient extends AppCompatActivity {
     private EditText cin;
     private EditText birthdate;
     private EditText address;
-    private EditText hospital;
+    private Spinner hospital_spinner;
     public Button buttonPrecedent,buttonSuivant;
     private String selectedGender = "";
+    public Map<String, Integer> HSP = new HashMap<>();
+    private int selectedValue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_identification);
 
+        // Supprimer tous dans le map HSP
+        HSP.clear();
+
+        // Create a CountDownLatch with initial count 1
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        // Récuperer toutes les hopitaux
+        ApiConnection apiConnection = new ApiConnection();
+        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/hospitals/all", new ApiConnection.Callback() {
+            @Override
+            public void onResponse(int code, String response) {
+                try {
+                    //JSONObject jsonObject = new JSONObject(response);
+                    //System.out.println("Hopitaux : "+response);
+                    JSONArray jsonArray = new JSONArray(response); // jsonString is the JSON string you provided
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String name = jsonObject.getString("name");
+                        Integer id = jsonObject.getInt("id");
+                        HSP.put(name, id);
+                    }
+                    System.out.println(HSP);
+                    // Release the latch to signal that the map is filled
+                    latch.countDown();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            @Override
+            public void onError(int code, String error) {
+
+            }
+            @Override
+            public void onImageDownloaded(Bitmap image) {
+
+            }
+        });
+
+        // Wait for the latch to be released before proceeding
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         lastName = findViewById(R.id.input_nom);
         firstName = findViewById(R.id.input_prenom);
         cin = findViewById(R.id.cin_patient);
         birthdate = findViewById(R.id.dataNaissance);
         address = findViewById(R.id.adresse_patient);
-        hospital = findViewById(R.id.hospital);
+        hospital_spinner = findViewById(R.id.hospital_spinner);
 
         buttonFemale = findViewById(R.id.button_female);
         buttonMale = findViewById(R.id.button_male);
@@ -70,6 +131,31 @@ public class SignUpPatient extends AppCompatActivity {
             }
         });
 
+        List<String> optionValues = new ArrayList<>(HSP.keySet());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, optionValues);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        hospital_spinner.setAdapter(adapter);
+
+        hospital_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = optionValues.get(position);
+                selectedValue = HSP.get(selectedItem);
+                Toast.makeText(getApplicationContext(), "Hopital sélectionné : " + selectedItem, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the event when nothing is selected
+                hospital_spinner.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.edittext_border));
+                Toast.makeText(SignUpPatient.this, "Le champ hospital est requis !", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
         buttonPrecedent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +173,7 @@ public class SignUpPatient extends AppCompatActivity {
                 String cinPatient = cin.getText().toString();
                 String dte = birthdate.getText().toString();
                 String adressePatient = address.getText().toString();
-                String hsp = hospital.getText().toString();
+                //String hsp = hospital.getText().toString();
 
 
                 // naviguer vers l'activite suivante et envoyer les données collecter de cette activite
@@ -109,10 +195,7 @@ public class SignUpPatient extends AppCompatActivity {
                 }else if(adressePatient.equals("")){
                     address.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.edittext_border));
                     Toast.makeText(SignUpPatient.this, "Le champ adresse est requis !", Toast.LENGTH_SHORT).show();
-                }else if(hsp.equals("")){
-                    hospital.setBackground(ContextCompat.getDrawable(SignUpPatient.this, R.drawable.edittext_border));
-                    Toast.makeText(SignUpPatient.this, "Le champ hospital est requis !", Toast.LENGTH_SHORT).show();
-                }else{
+                }else {
                     patient = new Patient();
                     patient.setLastName(nom);
                     patient.setFirstName(prenom);
@@ -123,6 +206,7 @@ public class SignUpPatient extends AppCompatActivity {
 
                     Intent intent= new Intent(SignUpPatient.this, SignUpPatientNext.class);
                     intent.putExtra("patient", patient);
+                    intent.putExtra("id", selectedValue);
                     startActivity(intent);
 
                     /*String cinPath = getIntent().getStringExtra("cinPath");
@@ -134,7 +218,6 @@ public class SignUpPatient extends AppCompatActivity {
             }
         });
     }
-
     private void showDatePicker() {
         // Obtenir la date actuelle
         Calendar calendar = Calendar.getInstance();

@@ -85,5 +85,9 @@ Une maladie virale qui peut affecter les dromadaires, Elle peut causer de la fi�
 Une maladie bactérienne qui peut être transmise des dromadaires aux humains et provoquer de la fièvre, des douleurs articulaires et musculaires, des maux de tête, de la fatigue, une perte de poids et des douleurs abdominales.articulaires et musculaires, des maux de tête, de la fatigue, une perte de poids et des douleurs abdomi...</string>
     <string name="title_activity_traitement_prescrit">TraitementPrescrit</string>
 
+    <string-array name="hospitals">
+        <item>choisi l\'hopitale</item>
+        <!-- Add more items as needed -->
+    </string-array>
 
 </resources>

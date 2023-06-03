@@ -178,15 +178,21 @@ public class DataBiometricFragment extends Fragment {
                             public void onResponse(int Code,String response) {
 
                                 if(Code==201){
-                                    progressDialog.dismiss();
                                     databaseHelper.updateUserByStatus(user.getLogin(), StatusDataBiometric.SUBMITTED);
-                                /*Intent intent = new Intent(PasswordActivity.this, InsideAppPatient.class);
-                                intent.putExtra("login",patient.getPhoneNumber());
-                                intent.putExtra("password",patient.getPassword());
-                                intent.putExtra("role","patient");
-                                startActivity(intent);*/
-                                    //startActivity(new Intent(PasswordActivity.this, SignInPatient.class));
-
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                // Attente de 2 secondes (2000 millisecondes)
+                                                Thread.sleep(2000);
+                                                // Instruction à exécuter après l'attente
+                                                progressDialog.dismiss();
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                    thread.start();
                                 }else{
                                     progressDialog.dismiss();
                                     new Thread(new Runnable() {
@@ -196,9 +202,7 @@ public class DataBiometricFragment extends Fragment {
                                             showDialogBox(errorMessage);
                                         }
                                     }).start();
-
                                 }
-
                             }
                             @Override
                             public void onError(int Code,String error) {
@@ -224,7 +228,21 @@ public class DataBiometricFragment extends Fragment {
                             public void onResponse(int Code,String response) {
 
                                 if(Code==200){
-                                    progressDialog.dismiss();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                // Attente de 2 secondes (2000 millisecondes)
+                                                Thread.sleep(2000);
+                                                // Instruction à exécuter après l'attente
+                                                progressDialog.dismiss();
+
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                    thread.start();
                                 }else{
                                     progressDialog.dismiss();
                                     new Thread(new Runnable() {

@@ -46,16 +46,16 @@ public class InsideAppPatient extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attachs1);
+        setContentView(R.layout.activity_inside_app_patient);
 
         recupererData();
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);//
+        bottomNavigationView = findViewById(R.id.btn_navigation);//
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);//
 
 
         // Ajouter le fragment Home par défaut
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_patient,
                 new HomeFragment()).commit();
 
     }
@@ -160,7 +160,7 @@ public class InsideAppPatient extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = new HomeFragment();
+                    Fragment selectedFragment = null;
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:
@@ -177,7 +177,7 @@ public class InsideAppPatient extends AppCompatActivity {
                             break;
                     }
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_patient,
                             selectedFragment).commit();
 
                     return true;

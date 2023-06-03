@@ -3,21 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
     <FrameLayout
-        android:id="@+id/fragment_container_doctor"
+        android:id="@+id/fragment_container_patient"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation">
+        android:layout_above="@id/btn_navigation">
     </FrameLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/btn_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingTop="8dp"
-        app:menu="@menu/menu_doctor"
+        app:menu="@menu/menu_patient"
         app:itemIconTint="@color/white"
         android:background="@color/precedentButtonColor"/>
 </RelativeLayout>

@@ -25,6 +25,9 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="31">
         <activity
+            android:name=".SpinnerActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignInPatient"
             android:exported="false" />
         <activity
