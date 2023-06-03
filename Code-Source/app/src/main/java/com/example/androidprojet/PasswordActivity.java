@@ -33,6 +33,7 @@ public class PasswordActivity extends AppCompatActivity {
     private Bitmap bitmap;
     TextView textView ;
     private  Bitmap bitmapCin;
+    private int idHospital;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -67,10 +68,10 @@ public class PasswordActivity extends AppCompatActivity {
                 }else{
                     patient.setPassword(pwd);
 
-                    String apiUrl = ApiConnection.URL+"/api/v1/patients/1";
+                    String apiUrl = ApiConnection.URL+"/api/v1/patients/"+idHospital;
                     String requestBody = toJSON();
 
-                    //Toast.makeText(PasswordActivity.this, requestBody, Toast.LENGTH_SHORT).show();
+
                     ApiConnection apiConnection = new ApiConnection();
 
                     System.out.println("Patient: " +requestBody);
@@ -124,13 +125,9 @@ public class PasswordActivity extends AppCompatActivity {
                         public void onImageDownloaded(Bitmap image) {
 
                         }
-
                     });
 
                 }
-
-                //startActivity(new Intent(PasswordActivity.this, InsideAppPatient.class));
-
             }
         });
 
@@ -164,7 +161,7 @@ public class PasswordActivity extends AppCompatActivity {
             json.put("password", patient.getPassword());
             json.put("gender", patient.getGender());
             json.put("cin", patient.getCin());
-            //json.put("address", patient.getAddress());
+            json.put("address", patient.getAddress());
             json.put("emergencyContact", patient.getPhoneNumber());
             json.put("MedicalHistory", "aucune pour le moment");
             json.put("status", "PENDING");
@@ -217,6 +214,9 @@ public class PasswordActivity extends AppCompatActivity {
     public Patient getEleveur(){
         Intent intent = getIntent();
         Patient patient = (Patient) intent.getSerializableExtra("patient");
+        if (intent.hasExtra("id")) {
+            idHospital = intent.getIntExtra("id", 1);
+        }
         return patient;
     }
 }

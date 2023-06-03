@@ -99,9 +99,10 @@
                  android:hint="@string/entrer_votre_mot_de_passe"
                  android:inputType="textPassword" />
          </LinearLayout>
+
          <FrameLayout
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="58dp"
              android:layout_marginTop="35dp"
              android:animateLayoutChanges="true">
 
@@ -110,8 +111,8 @@
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:layout_gravity="center_horizontal|center"
-                 android:layout_marginLeft="20dp"
-                 android:layout_marginRight="20dp"
+                 android:layout_marginLeft="45dp"
+                 android:layout_marginRight="45dp"
                  android:background="@drawable/getstarted_button"
                  android:text="Se connecter"
                  android:textAllCaps="false"

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".SignUpPatient"
     tools:ignore="contentDescription">
@@ -389,7 +390,17 @@
                 android:hint="Votre adresse"
                 android:textSize="14dp"/>
 
-            <EditText
+            <Spinner
+                android:id="@+id/hospital_spinner"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/input_name"
+                android:spinnerMode="dropdown"
+                android:paddingLeft="8dp"/>
+
+            <!--<EditText
                 android:id="@+id/hospital"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
@@ -400,7 +411,8 @@
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:hint="Votre hospital"
-                android:textSize="14dp"/>
+                android:textSize="14dp"
+                android:entries="@array/hospitals"/>-->
 
         </LinearLayout>
 

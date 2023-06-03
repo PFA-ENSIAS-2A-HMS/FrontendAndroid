@@ -27,6 +27,7 @@ public class SignUpPatientNext extends AppCompatActivity {
   private  Bitmap bitmapCin;
   private static final int PICK_IMAGE_REQUEST = 1;
   private ShapeableImageView buttonimage;
+  private int idHopital;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class SignUpPatientNext extends AppCompatActivity {
 
         // acces a la galerie
         buttonimage = findViewById(R.id.imvCircularWithStroke);
-        /*buttonimage.setOnClickListener(new View.OnClickListener() {
+        buttonimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Créer une intention pour ouvrir la galerie de photos
@@ -49,7 +50,7 @@ public class SignUpPatientNext extends AppCompatActivity {
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
-        });*/
+        });
 
         buttonSuivant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +69,7 @@ public class SignUpPatientNext extends AppCompatActivity {
 
                     Intent intent= new Intent(SignUpPatientNext.this, PasswordActivity.class);
                     intent.putExtra("patient", patient);
+                    intent.putExtra("id", idHopital);
 
                     /*File directory = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "VotreDossier");
                     if (!directory.exists()) {
@@ -105,6 +107,9 @@ public class SignUpPatientNext extends AppCompatActivity {
     public Patient getEleveur(){
         Intent intent = getIntent();
         Patient patient = (Patient) intent.getSerializableExtra("patient");
+        if (intent.hasExtra("id")) {
+            idHopital = intent.getIntExtra("id", 1);
+        }
         return patient;
     }
     // Recevoir les résultats de l'intention pour sélectionner une photo
