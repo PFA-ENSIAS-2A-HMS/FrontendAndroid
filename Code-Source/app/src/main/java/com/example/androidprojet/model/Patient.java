@@ -19,6 +19,18 @@ public class Patient implements Serializable {
 
     public Patient(String firstName,
                    String lastName,
+                   String phoneNumber,
+                   String profile,
+                   String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.profile = profile;
+        this.password = password;
+    }
+
+    public Patient(String firstName,
+                   String lastName,
                    String gender,
                    String cin,
                    String birthdate,

@@ -6,6 +6,9 @@ public class FireBaseUser implements Serializable {
     public String name, email, password, token;
     public int image;
 
+    public FireBaseUser() {
+    }
+
     public FireBaseUser(String name, String email, String password, String token, int image) {
         this.name = name;
         this.email = email;
@@ -13,4 +16,5 @@ public class FireBaseUser implements Serializable {
         this.token = token;
         this.image = image;
     }
+
 }

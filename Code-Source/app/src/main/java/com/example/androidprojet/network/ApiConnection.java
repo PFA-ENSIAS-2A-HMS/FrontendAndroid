@@ -9,7 +9,7 @@ import java.io.IOException;
 import okhttp3.*;
 
 public class ApiConnection {
-    public static final String URL = "http://100.76.108.249:8080";
+    public static final String URL = "http://100.91.177.64:8080";
     public void getFromApi(String apiUrl, Callback callback) {
         OkHttpClient client = new OkHttpClient();
 

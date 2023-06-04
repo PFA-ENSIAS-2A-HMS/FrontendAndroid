@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Inscription"
+                android:text="@string/inscription"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Votre information est en sécurité avec nous"
+                android:text="@string/infoSecuriser"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -92,7 +92,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="40dp"
                 android:gravity="center"
-                android:text="Veuillez choisir un mot de passe"
+                android:text="@string/choix_mot_de_passe"
                 android:textColor="@color/precedentButtonColor"
                 android:textSize="24sp"
                 android:textStyle="bold" />

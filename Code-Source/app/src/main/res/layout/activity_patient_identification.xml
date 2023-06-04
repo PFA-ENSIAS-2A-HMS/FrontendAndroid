@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Inscription"
+                android:text="@string/inscription"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Votre informations est en sécurité avec nous"
+                android:text="@string/infoSecuriser"
                 android:textColor="@color/black"
                 android:textSize="14sp"/>
 
@@ -141,7 +141,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nom"
+                    android:text="@string/nomPatient"
                     android:textColor="@color/black"
                     android:textSize="18sp"></TextView>
 
@@ -165,7 +165,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Prénom"
+                    android:text="@string/prenomPatient"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -196,7 +196,7 @@
                 android:background="@drawable/input_name"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
-                android:hint="Votre nom"
+                android:hint="@string/votre_nom"
                 android:textSize="14dp"/>
 
             <EditText
@@ -209,7 +209,7 @@
                 android:background="@drawable/input_name"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
-                android:hint="Votre prénom"
+                android:hint="@string/votre_prenom"
                 android:textSize="14dp"/>
         </LinearLayout>
 
@@ -232,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/CIN_fr"
+                    android:text="@string/cinPatient"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -258,7 +258,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Date de naissace"
+                    android:text="@string/dateNaissance"
                     android:textColor="@color/black"
                     android:textSize="18sp"/>
 
@@ -328,7 +328,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Adresse actuelle"
+                    android:text="@string/adresseActuelle"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -354,7 +354,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Hospital"
+                    android:text="@string/hopital"
                     android:textColor="@color/black"
                     android:textSize="18sp"/>
 
@@ -387,7 +387,7 @@
                 android:background="@drawable/input_name"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
-                android:hint="Votre adresse"
+                android:hint="@string/votre_adresse"
                 android:textSize="14dp"/>
 
             <Spinner
@@ -399,20 +399,6 @@
                 android:background="@drawable/input_name"
                 android:spinnerMode="dropdown"
                 android:paddingLeft="8dp"/>
-
-            <!--<EditText
-                android:id="@+id/hospital"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:autofillHints="name"
-                android:background="@drawable/input_name"
-                android:inputType="textPersonName"
-                android:textAlignment="center"
-                android:hint="Votre hospital"
-                android:textSize="14dp"
-                android:entries="@array/hospitals"/>-->
 
         </LinearLayout>
 
@@ -468,7 +454,7 @@
             <TextView
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:text="champ(s) obligatoire(s)"
+                android:text="@string/champs_obligatoires"
                 android:textSize="16sp" />
 
         </LinearLayout>
