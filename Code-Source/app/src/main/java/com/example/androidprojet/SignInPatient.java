@@ -45,7 +45,6 @@ public class SignInPatient extends AppCompatActivity {
                     intent.putExtra("role","patient");
                     startActivity(intent);
                 }
-                //startActivity(new Intent(SignInDoctor.this, InsideAppDoctor.class));
             }
         });
 

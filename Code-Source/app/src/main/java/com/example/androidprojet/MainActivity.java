@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeLanguage("ar");
+                changeLanguage("en");
             }
         });
 

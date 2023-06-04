@@ -3,6 +3,7 @@ package com.example.androidprojet;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -47,13 +48,18 @@ public class SignUpPatient extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_identification);
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Téléchargement des hopitaux en cours...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         // Supprimer tous dans le map HSP
         HSP.clear();
 
         // Create a CountDownLatch with initial count 1
         final CountDownLatch latch = new CountDownLatch(1);
+        setContentView(R.layout.activity_patient_identification);
 
         // Récuperer toutes les hopitaux
         ApiConnection apiConnection = new ApiConnection();
@@ -71,7 +77,23 @@ public class SignUpPatient extends AppCompatActivity {
                         HSP.put(name, id);
                     }
                     System.out.println(HSP);
-                    // Release the latch to signal that the map is filled
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000); // Wait for 2 seconds
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressDialog.dismiss();
+                                        // Release the latch to signal that the map is filled
+                                    }
+                                });
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
                     latch.countDown();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -80,7 +102,8 @@ public class SignUpPatient extends AppCompatActivity {
             }
             @Override
             public void onError(int code, String error) {
-
+                progressDialog.dismiss();
+                latch.countDown();
             }
             @Override
             public void onImageDownloaded(Bitmap image) {
