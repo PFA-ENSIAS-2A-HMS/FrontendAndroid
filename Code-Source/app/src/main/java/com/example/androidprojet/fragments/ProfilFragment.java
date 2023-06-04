@@ -84,14 +84,14 @@ public class ProfilFragment extends Fragment {
             }, 1000);
         });
 
-        ApiConnection apiConnection = new ApiConnection();
-        databaseHelper = new DatabaseHelper(getContext());
-        user = databaseHelper.getUser();
+        //ApiConnection apiConnection = new ApiConnection();
+        //databaseHelper = new DatabaseHelper(getContext());
+        //user = databaseHelper.getUser();
         //Toast.makeText(getContext(), ""+user.getLogin(), Toast.LENGTH_SHORT).show();
-        if(user.getRole().equals("patient")){
+        /*if(user.getRole().equals("patient")){
             profile_patient(view,apiConnection);
-        }/*else{
-            //profile_veterinaire(view,apiConnection);
+        }else{
+            profile_veterinaire(view,apiConnection);
         }*/
     }
 
@@ -196,8 +196,8 @@ public class ProfilFragment extends Fragment {
         });
 
     }
-    /*private void profile_veterinaire(View view, ApiConnection apiConnection){
-        displayRole = getActivity().findViewById(R.id.textView4);
+    private void profile_veterinaire(View view, ApiConnection apiConnection){
+        /*displayRole = getActivity().findViewById(R.id.textView4);
         displayRole.setText(user.getRole().equals("breeder") ? "éleveur":  "vétérinaire");
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Chargement des données en cours...");
@@ -272,9 +272,9 @@ public class ProfilFragment extends Fragment {
             public void onImageDownloaded(Bitmap image) {
 
             }
-        });
+        });*/
 
-    }*/
+    }
 
 
 

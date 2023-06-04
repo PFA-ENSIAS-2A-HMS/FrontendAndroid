@@ -43,6 +43,8 @@ public class TraitementPrescrit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_traitement_prescrit);
 
+        getInfo();
+
         dateConsultation = findViewById(R.id.dateConsultation);
         diagnostic = findViewById(R.id.diagnostic);
         medicaments = findViewById(R.id.medicaments);
@@ -146,6 +148,15 @@ public class TraitementPrescrit extends AppCompatActivity {
             }
         });
     }
+
+    public void getInfo() {
+        Intent it = getIntent();
+        String idPatient = it.getStringExtra("idPatient");
+        int convertedIdPatient = Integer.parseInt(idPatient);
+        Toast.makeText(this, "id :"+convertedIdPatient, Toast.LENGTH_SHORT).show();
+    }
+
+
     public void reinitialize(EditText dateConsultation,
                              EditText diagnostic,
                              EditText medicaments,

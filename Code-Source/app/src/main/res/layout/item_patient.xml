@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="8dp"
     android:layout_marginHorizontal="8dp"
-    android:background="@color/white"
     android:foreground="?android:attr/selectableItemBackground">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -67,8 +66,8 @@
         app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintStart_toEndOf="@+id/nomCompletPatient"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.493"
-        app:srcCompat="@drawable/ic_del" />
+        app:layout_constraintVertical_bias="0.328"
+        app:srcCompat="@drawable/ic_delete_pat" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
