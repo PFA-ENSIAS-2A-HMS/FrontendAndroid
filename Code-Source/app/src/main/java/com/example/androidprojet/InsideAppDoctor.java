@@ -25,7 +25,7 @@ public class InsideAppDoctor extends AppCompatActivity {
 
         // Ajouter le fragment specialiste par défaut
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_doctor,
-                new ListPatients()).commit();
+                new MessageFragment()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

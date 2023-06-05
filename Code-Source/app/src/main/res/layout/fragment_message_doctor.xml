@@ -45,7 +45,9 @@
             android:gravity="center"
             android:text="Si vous souhaitez contacter un spécialiste, merci de cliquer sur le bouton ci-dessous."
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
 
     </LinearLayout>
 

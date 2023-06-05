@@ -276,9 +276,6 @@ public class ProfilFragment extends Fragment {
 
     }
 
-
-
-
     private void updateProfilePicture(Bitmap image) {
         ShapeableImageView profilePictureImageView = getActivity().findViewById(R.id.profile_picture);
         profilePictureImageView.setImageBitmap(image);
@@ -286,5 +283,6 @@ public class ProfilFragment extends Fragment {
         ProgressBar loadingProgress = getActivity().findViewById(R.id.loading_progress);
         loadingProgress.setVisibility(View.GONE);
     }
+
 
 }
