@@ -33,7 +33,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         void setUserData(FireBaseUser fireBaseUser) {
             binding.textName.setText(fireBaseUser.name);
             binding.textEmail.setText(fireBaseUser.email);
-            binding.imageProfile.setImageResource(fireBaseUser.image);
+            binding.imageProfile.setImageBitmap(getUserImage(fireBaseUser.image));
         }
 
 
