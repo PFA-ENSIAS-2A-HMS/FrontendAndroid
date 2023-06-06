@@ -99,6 +99,70 @@ public class ApiConnection {
         });
     }
 
+    public void postToApi(String apiUrl, String requestBody, String token, Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(mediaType, requestBody);
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .post(body)
+                .addHeader("Authorization", "Bearer " + token) // Ajouter l'en-tête Authorization avec le token
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                try {
+                    String responseBody = response.body().string();
+                    int responseCode = response.code();
+
+                    callback.onResponse(responseCode, responseBody);
+                } catch (Exception e) {
+                    callback.onError(0, e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onError(0, e.getMessage());
+            }
+        });
+    }
+
+    public void putToApi(String apiUrl, String requestBody, String token, Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(mediaType, requestBody);
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .put(body)
+                .addHeader("Authorization", "Bearer " + token) // Ajouter l'en-tête Authorization avec le token
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                try {
+                    String responseBody = response.body().string();
+                    int responseCode = response.code();
+
+                    callback.onResponse(responseCode, responseBody);
+                } catch (Exception e) {
+                    callback.onError(0, e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onError(0, e.getMessage());
+            }
+        });
+    }
+
     public void putToApi(String apiUrl, String requestBody, Callback callback) {
         OkHttpClient client = new OkHttpClient();
 

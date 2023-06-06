@@ -14,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.example.androidprojet.MainActivity;
 import com.example.androidprojet.R;
 import com.example.androidprojet.database.DatabaseHelper;
@@ -68,7 +66,7 @@ public class ProfilFragment extends Fragment {
 
                 Intent intent_logout = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent_logout);
-            }, 1000);
+            }, 1200);
         });
 
         ApiConnection apiConnection = new ApiConnection();
@@ -91,11 +89,11 @@ public class ProfilFragment extends Fragment {
     private void profile_patient(View view, ApiConnection apiConnection){
         displayRole = getActivity().findViewById(R.id.textView4);
         displayRole.setText(user.getRole().equals("patient") ? "Patient":  "Médecin");
-        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        /*ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Chargement des données en cours...");
         progressDialog.setCancelable(false);
-        progressDialog.show();
-        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/patients/phone/"+user.getLogin(), new ApiConnection.Callback() {
+        progressDialog.show();*/
+        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/patients/"+user.getLogin(), user.getToken(), new ApiConnection.Callback() {
 
             @Override
             public void onResponse(int code, String response) {
@@ -137,7 +135,7 @@ public class ProfilFragment extends Fragment {
 
                         ProgressBar loadingProgress = view.findViewById(R.id.loading_progress);
 
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
                         loadingProgress.setVisibility(View.GONE);
 
                         /*String imageUrl = ApiConnection.URL+"/"+profile;
@@ -280,6 +278,4 @@ public class ProfilFragment extends Fragment {
         ProgressBar loadingProgress = getActivity().findViewById(R.id.loading_progress);
         loadingProgress.setVisibility(View.INVISIBLE);*/
     }
-
-
 }

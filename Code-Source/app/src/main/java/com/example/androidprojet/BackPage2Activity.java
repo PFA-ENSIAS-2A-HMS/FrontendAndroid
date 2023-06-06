@@ -33,10 +33,7 @@ public class BackPage2Activity extends AppCompatActivity {
                         User user = databaseHelper.getUser();
                         if(user.getRole().equals("patient")){
                             Intent intent = new Intent(BackPage2Activity.this, InsideAppPatient.class);
-                            intent.putExtra("login", user.getLogin());
-                            intent.putExtra("password", user.getPassword());
-                            intent.putExtra("role", user.getRole());
-                            intent.putExtra("isAthenticated", "true");
+                            intent.putExtra("patient", user);
                             startActivity(intent);
                             finish();
                         }else {

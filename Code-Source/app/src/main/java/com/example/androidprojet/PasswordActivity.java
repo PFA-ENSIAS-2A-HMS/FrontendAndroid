@@ -1,10 +1,5 @@
 package com.example.androidprojet;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -15,24 +10,32 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import com.example.androidprojet.database.DatabaseHelper;
+import com.example.androidprojet.enums.StatusDataBiometric;
 import com.example.androidprojet.model.Patient;
+import com.example.androidprojet.model.User;
 import com.example.androidprojet.network.ApiConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 
 public class PasswordActivity extends AppCompatActivity {
+
+    private DatabaseHelper databaseHelper;
     public Button buttonEnregistrer;
     private EditText pwd_input ;
     private EditText pwd_confirmation_input;
     private Patient patient;
     private Bitmap bitmap;
-    TextView textView ;
     private  Bitmap bitmapCin;
+    private User userPat;
     private int idHospital;
 
     @SuppressLint("MissingInflatedId")
@@ -41,7 +44,7 @@ public class PasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pwdactivity);
 
-        patient = getEleveur();
+        patient = getPatient();
 
         buttonEnregistrer = (Button) findViewById(R.id.enregistrerButton);
         pwd_input = findViewById(R.id.pwd_input);
@@ -68,9 +71,8 @@ public class PasswordActivity extends AppCompatActivity {
                 }else{
                     patient.setPassword(pwd);
 
-                    String apiUrl = ApiConnection.URL+"/api/v1/patients/"+idHospital;
+                    String apiUrl = ApiConnection.URL+"/api/v1/auth/register/patient/"+idHospital;
                     String requestBody = toJSON();
-
 
                     ApiConnection apiConnection = new ApiConnection();
 
@@ -85,14 +87,23 @@ public class PasswordActivity extends AppCompatActivity {
                     apiConnection.postToApi(apiUrl, requestBody, new ApiConnection.Callback() {
                         @Override
                         public void onResponse(int Code,String response) {
-
-                            if(Code==201){
-                                progressDialog.dismiss();
-                                Intent intent = new Intent(PasswordActivity.this, InsideAppPatient.class);
-                                intent.putExtra("login",patient.getPhoneNumber());
-                                intent.putExtra("password",patient.getPassword());
-                                intent.putExtra("role","patient");
-                                startActivity(intent);
+                            if(Code==200){
+                                System.out.println("response : "+response);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    System.out.println("jsonObject : "+jsonObject);
+                                    int id = jsonObject.getInt("id");
+                                    String accessToken = jsonObject.getString("accessToken");
+                                    userPat = new User(Integer.toString(id), pwd, "patient", accessToken, StatusDataBiometric.NOT_SUBMITTED);
+                                    databaseHelper = new DatabaseHelper(getApplicationContext());
+                                    databaseHelper.addUser(userPat.getLogin(), userPat.getPassword(), userPat.getRole(),userPat.getToken(), userPat.getDataBiometric());
+                                    Intent intent = new Intent(PasswordActivity.this, InsideAppPatient.class);
+                                    intent.putExtra("patient", userPat);
+                                    startActivity(intent);
+                                    progressDialog.dismiss();
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
                                 //startActivity(new Intent(PasswordActivity.this, SignInPatient.class));
 
                             }else{
@@ -211,12 +222,16 @@ public class PasswordActivity extends AppCompatActivity {
         return stream.toByteArray();
     }
 
-    public Patient getEleveur(){
+    public Patient getPatient(){
         Intent intent = getIntent();
         Patient patient = (Patient) intent.getSerializableExtra("patient");
         if (intent.hasExtra("id")) {
             idHospital = intent.getIntExtra("id", 1);
         }
         return patient;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
