@@ -10,9 +10,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidprojet.adapter.UserAdapter;
+import com.example.androidprojet.database.DatabaseHelper;
 import com.example.androidprojet.databinding.ActivityListSpecialisteBinding;
 import com.example.androidprojet.model.FireBaseUser;
-import com.example.androidprojet.model.Patient;
+import com.example.androidprojet.model.User;
 import com.example.androidprojet.network.ApiConnection;
 import com.example.androidprojet.utilities.Constants;
 import com.example.androidprojet.utilities.PreferenceManager;
@@ -23,30 +24,35 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 public class ListSpecialiste extends AppCompatActivity {
-    private final ArrayList<Patient> doctors = new ArrayList<>();
     private ProgressBar progressBarSpecialiste;
     private ActivityListSpecialisteBinding binding;
     private PreferenceManager preferenceManager;
+    private DatabaseHelper databaseHelper;
+    private User docteur;
+    private boolean getValid=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityListSpecialisteBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+
+        databaseHelper = new DatabaseHelper(this);
+        docteur = databaseHelper.getUser();
 
         preferenceManager = new PreferenceManager(getApplicationContext());
 
-        progressBarSpecialiste = findViewById(R.id.progressBarSpecialiste);
+        getDoctors();
+            // En relation avec firebase
+        setContentView(binding.getRoot());
 
-        // En relation avec firebase
-        getUsers();
-
-        /*getDoctors();
-
-        RecyclerView rv = findViewById(R.id.usersRecyclerView);
+        /*RecyclerView rv = findViewById(R.id.usersRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(new PatientAdapter(this, doctors, new PatientAdapter.ItemClick() {
             @Override
@@ -66,48 +72,44 @@ public class ListSpecialiste extends AppCompatActivity {
             }
         }).start();*/
     }
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 
-    public void getDoctors() {
+    public boolean getDoctors() {
+        //loading(true);
         final CountDownLatch latch = new CountDownLatch(1);
 
         // Récupérer toutes les hôpitaux
         ApiConnection apiConnection = new ApiConnection();
-        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/doctors", new ApiConnection.Callback() {
+        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/doctors/hospitals/"+docteur.getPassword(), docteur.getToken(), new ApiConnection.Callback() {
             @Override
             public void onResponse(int code, String response) {
+                System.out.println("response : "+response);
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    String firstName, lastName, phoneNumber, image_url;
-                    int id;
+                    String firstName, lastName, image_url, email, passwrod;
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         firstName = jsonObject.getString("firstName");
                         lastName = jsonObject.getString("lastName");
-                        phoneNumber = jsonObject.getString("email");
                         image_url = jsonObject.getString("image_url");
-                        id = jsonObject.getInt("id");
-                        Patient patient = new Patient(
-                                firstName,
-                                lastName,
-                                phoneNumber,
-                                ApiConnection.URL+"/api/v1/doctors/display/"+image_url,
-                                Long.toString(id));
+                        email = jsonObject.getString("email");
+                        passwrod = jsonObject.getString("password");
+                        int id = jsonObject.getInt("id");
 
-                        doctors.add(patient);
-                        //System.out.println("Patient: " + patient + "\n");
+                        SignUpToFirebase(lastName+" "+firstName, email, passwrod, ApiConnection.URL+"/api/v1/doctors/display/"+image_url, Integer.toString(id));
+
                     }
+                    getUsers();
+                    getValid = false;
                     latch.countDown();
                 } catch (Exception e) {
+                    latch.countDown();
                     throw new RuntimeException(e);
                 }
             }
             @Override
             public void onError(int code, String error) {
                 System.out.println("Error, code :"+code);
-                //latch.countDown();
+                latch.countDown();
             }
 
             @Override
@@ -122,15 +124,55 @@ public class ListSpecialiste extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if(getValid) {
+            return true;
+        }else {
+            return false;
+        }
     }
 
-    private void getUsers() {
-        loading(true);
+    private void SignUpToFirebase(String name, String email, String password, String image, String id) {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+
+        // Vérifier si le docteur existe déjà dans Firebase
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo(Constants.KEY_USER_ID, id)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (querySnapshot.isEmpty()) {
+                        // Le docteur n'existe pas encore dans Firebase, on peut l'ajouter
+                        HashMap<String, Object> user = new HashMap<>();
+                        user.put(Constants.KEY_NAME, name);
+                        user.put(Constants.KEY_EMAIL, email);
+                        user.put(Constants.KEY_PASSWORD, password);
+                        user.put(Constants.KEY_IMAGE, image);
+                        user.put(Constants.KEY_USER_ID, id);
+
+                        database.collection(Constants.KEY_COLLECTION_USERS)
+                                .add(user)
+                                .addOnSuccessListener(documentReference -> {
+                                    // Succès de l'ajout du docteur dans Firebase
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Échec de l'ajout du docteur dans Firebase
+                                });
+                    } else {
+                        // Le docteur existe déjà dans Firebase, on ne fait rien
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Échec de la requête pour vérifier l'existence du docteur dans Firebase
+                });
+    }
+
+
+    /*private void getUsers() {
+        //final CountDownLatch latch = new CountDownLatch(1);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .get()
                 .addOnCompleteListener(task -> {
-                    loading(false);
+                    //loading(false);
                     String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
                     if(task.isSuccessful() && task.getResult() != null) {
                         ArrayList<FireBaseUser> users = new ArrayList<>();
@@ -161,11 +203,65 @@ public class ListSpecialiste extends AppCompatActivity {
                         }else {
                             showErrorMessage();
                         }
+                        //latch.countDown();
                     }else {
+                        showErrorMessage();
+                        //latch.countDown();
+                    }
+
+                });
+    }*/
+
+    private void getUsers() {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
+
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Set<FireBaseUser> users = new HashSet<>();
+                         Set<String> emails = new HashSet<>();
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                            String userId = queryDocumentSnapshot.getId();
+
+                            // Vérifier si l'utilisateur est le docteur actuellement authentifié
+                            if (currentUserId.equals(userId)) {
+                                continue; // Ignorer le docteur actuellement authentifié
+                            }
+
+                            FireBaseUser user = new FireBaseUser();
+                            user.name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
+                            user.email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
+                            user.image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
+                            user.token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
+                            user.id = userId;
+                            if(!emails.contains(user.email)){
+                                emails.add(user.email);
+                                users.add(user);
+                            }
+
+                        }
+
+                        List<FireBaseUser> lists = new ArrayList<>(users);
+                        if (users.size() > 0) {
+                            UserAdapter userAdapter = new UserAdapter(lists, fireBaseUser -> {
+                                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                                intent.putExtra(Constants.KEY_USER, fireBaseUser);
+                                startActivity(intent);
+                                finish();
+                            });
+                            binding.usersRecyclerView.setAdapter(userAdapter);
+                            binding.usersRecyclerView.setVisibility(View.VISIBLE);
+                        } else {
+                            showErrorMessage();
+                        }
+                    } else {
                         showErrorMessage();
                     }
                 });
     }
+
 
     private void loading(Boolean isLoading) {
         if(isLoading) {
@@ -180,4 +276,7 @@ public class ListSpecialiste extends AppCompatActivity {
         binding.textErrorMessage.setVisibility(View.VISIBLE);
     }
 
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }

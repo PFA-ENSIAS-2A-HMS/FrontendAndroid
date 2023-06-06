@@ -14,8 +14,10 @@ import androidx.fragment.app.Fragment;
 import com.example.androidprojet.ListSpecialiste;
 import com.example.androidprojet.R;
 import com.example.androidprojet.adapter.RecentConversationsAdapter;
+import com.example.androidprojet.database.DatabaseHelper;
 import com.example.androidprojet.databinding.FragmentMessage2Binding;
 import com.example.androidprojet.model.ChatMessage;
+import com.example.androidprojet.model.User;
 import com.example.androidprojet.utilities.Constants;
 import com.example.androidprojet.utilities.PreferenceManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,11 +43,14 @@ public class MessageFragment extends Fragment {
     private List<ChatMessage> conversations;
     private RecentConversationsAdapter conversationsAdapter;
     private FirebaseFirestore database;
+    private DatabaseHelper databaseHelper;
+    private User docteur;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        getDocteur();
     }
 
     @Nullable
@@ -159,5 +164,10 @@ public class MessageFragment extends Fragment {
 
     private void ShowToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void getDocteur() {
+        databaseHelper = new DatabaseHelper(getContext());
+        docteur = databaseHelper.getUser();
     }
 }

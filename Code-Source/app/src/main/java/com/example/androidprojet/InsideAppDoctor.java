@@ -1,19 +1,25 @@
 package com.example.androidprojet;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.os.Bundle;
-import android.view.MenuItem;
+import com.example.androidprojet.database.DatabaseHelper;
 import com.example.androidprojet.fragments.ListPatients;
 import com.example.androidprojet.fragments.MessageFragment;
 import com.example.androidprojet.fragments.ProfilFragment;
+import com.example.androidprojet.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class InsideAppDoctor extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;//
+    private BottomNavigationView bottomNavigationView;
+    private DatabaseHelper databaseHelper;
+    private User docteur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +29,12 @@ public class InsideAppDoctor extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);//
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);//
 
+        databaseHelper = new DatabaseHelper(this);
+        getDocteur();
+
         // Ajouter le fragment specialiste par défaut
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_doctor,
-                new MessageFragment()).commit();
+                new ListPatients()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -52,4 +61,9 @@ public class InsideAppDoctor extends AppCompatActivity {
                     return true;
                 }
             };
+    public void getDocteur() {
+        Intent intent = getIntent();
+        docteur = (User) intent.getSerializableExtra("docteur");
+        databaseHelper.addUser(docteur.getLogin(), docteur.getPassword(), docteur.getRole(),docteur.getToken(),docteur.getDataBiometric());
+    }
 }

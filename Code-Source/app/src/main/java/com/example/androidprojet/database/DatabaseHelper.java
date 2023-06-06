@@ -128,5 +128,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME, cv, COLUMN_LOGIN+"=?", new String[]{login});
         db.close();
     }
-
 }

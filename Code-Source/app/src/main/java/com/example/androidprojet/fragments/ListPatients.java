@@ -8,15 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.androidprojet.R;
 import com.example.androidprojet.TraitementPrescrit;
 import com.example.androidprojet.adapter.PatientAdapter;
+import com.example.androidprojet.database.DatabaseHelper;
+import com.example.androidprojet.databinding.FragmentListPatientsBinding;
 import com.example.androidprojet.model.Patient;
+import com.example.androidprojet.model.User;
 import com.example.androidprojet.network.ApiConnection;
 
 import org.json.JSONArray;
@@ -28,6 +33,9 @@ import java.util.concurrent.CountDownLatch;
 public class ListPatients extends Fragment {
     private ArrayList<Patient> patients = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private User docteur;
+    private FragmentListPatientsBinding binding;
+    private DatabaseHelper databaseHelper;
 
     public ListPatients() {
         // Required empty public constructor
@@ -36,7 +44,8 @@ public class ListPatients extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        binding = FragmentListPatientsBinding.inflate(inflater, container, false);
+        getDocteur();
         getPatients();
 
         // Inflate the layout for this fragment
@@ -46,10 +55,7 @@ public class ListPatients extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Téléchargement des patients en cours...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+
 
         RecyclerView rv = getActivity().findViewById(R.id.usersRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -61,17 +67,17 @@ public class ListPatients extends Fragment {
                 startActivity(it);
             }
         }));
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(3500); // Attendre pendant 3 secondes (3000 millisecondes)
-                    progressDialog.dismiss();
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
 
     }
 
@@ -79,14 +85,19 @@ public class ListPatients extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public void getPatients() {
+    public void getDocteur() {
+        databaseHelper = new DatabaseHelper(getContext());
+        docteur = databaseHelper.getUser();
+    }
 
+    public void getPatients() {
+        loading(true);
         // Create a CountDownLatch with initial count 1
         final CountDownLatch latch = new CountDownLatch(1);
 
         // Récupérer toutes les hôpitaux
         ApiConnection apiConnection = new ApiConnection();
-        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/appointments/doctor/2", new ApiConnection.Callback() {
+        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/appointments/doctor/"+docteur.getLogin(), docteur.getToken(),new ApiConnection.Callback() {
             @Override
             public void onResponse(int code, String response) {
                 try {
@@ -110,6 +121,7 @@ public class ListPatients extends Fragment {
                         patients.add(patient);
                         //System.out.println("Patient: " + patient + "\n");
                     }
+                    loading(false);
                     latch.countDown();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -118,7 +130,8 @@ public class ListPatients extends Fragment {
             @Override
             public void onError(int code, String error) {
                 System.out.println("Error, code :"+code);
-                //latch.countDown();
+                loading(false);
+                latch.countDown();
             }
 
             @Override
@@ -132,6 +145,17 @@ public class ListPatients extends Fragment {
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void loading(Boolean isLoading) {
+        if(isLoading) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Téléchargement des patients en cours...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }else {
+            progressDialog.dismiss();
         }
     }
 }

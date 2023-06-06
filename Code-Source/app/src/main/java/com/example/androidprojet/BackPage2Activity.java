@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.androidprojet.database.DatabaseHelper;
-import com.example.androidprojet.model.User;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
+
+import com.example.androidprojet.database.DatabaseHelper;
+import com.example.androidprojet.model.User;
 
 public class BackPage2Activity extends AppCompatActivity {
 
@@ -20,6 +20,7 @@ public class BackPage2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.back_page);
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        databaseHelper.deleteAllUsers();
         int count = databaseHelper.getTotalUserCount();
 
         if (isFirstLaunch) {
@@ -30,13 +31,20 @@ public class BackPage2Activity extends AppCompatActivity {
                     @Override
                     public void run() {
                         User user = databaseHelper.getUser();
-                        Intent intent = new Intent(BackPage2Activity.this, InsideAppPatient.class);
-                        intent.putExtra("login", user.getLogin());
-                        intent.putExtra("password", user.getPassword());
-                        intent.putExtra("role", user.getRole());
-                        intent.putExtra("isAthenticated", "true");
-                        startActivity(intent);
-                        finish();
+                        if(user.getRole().equals("patient")){
+                            Intent intent = new Intent(BackPage2Activity.this, InsideAppPatient.class);
+                            intent.putExtra("login", user.getLogin());
+                            intent.putExtra("password", user.getPassword());
+                            intent.putExtra("role", user.getRole());
+                            intent.putExtra("isAthenticated", "true");
+                            startActivity(intent);
+                            finish();
+                        }else {
+                            Intent intent = new Intent(BackPage2Activity.this, InsideAppDoctor.class);
+                            intent.putExtra("docteur", user);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }, 1500);
             } else {

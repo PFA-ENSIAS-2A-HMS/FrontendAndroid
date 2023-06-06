@@ -1,10 +1,9 @@
 package com.example.androidprojet.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -13,38 +12,25 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
 
 import com.example.androidprojet.MainActivity;
 import com.example.androidprojet.R;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.androidprojet.database.DatabaseHelper;
 import com.example.androidprojet.model.User;
 import com.example.androidprojet.network.ApiConnection;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.gson.JsonParser;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.concurrent.CountDownLatch;
 
 
 public class ProfilFragment extends Fragment {
@@ -53,6 +39,7 @@ public class ProfilFragment extends Fragment {
     private String profile;
     private TextView displayRole;
     private TextView logoutView;
+    private Bitmap bitmap;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -84,15 +71,15 @@ public class ProfilFragment extends Fragment {
             }, 1000);
         });
 
-        //ApiConnection apiConnection = new ApiConnection();
-        //databaseHelper = new DatabaseHelper(getContext());
-        //user = databaseHelper.getUser();
+        ApiConnection apiConnection = new ApiConnection();
+        databaseHelper = new DatabaseHelper(getContext());
+        user = databaseHelper.getUser();
         //Toast.makeText(getContext(), ""+user.getLogin(), Toast.LENGTH_SHORT).show();
-        /*if(user.getRole().equals("patient")){
+        if(user.getRole().equals("patient")){
             profile_patient(view,apiConnection);
         }else{
-            profile_veterinaire(view,apiConnection);
-        }*/
+            profile_docteur(view,apiConnection);
+        }
     }
 
     @Override
@@ -196,68 +183,78 @@ public class ProfilFragment extends Fragment {
         });
 
     }
-    private void profile_veterinaire(View view, ApiConnection apiConnection){
-        /*displayRole = getActivity().findViewById(R.id.textView4);
-        displayRole.setText(user.getRole().equals("breeder") ? "éleveur":  "vétérinaire");
+    private void profile_docteur(View view, ApiConnection apiConnection){
+        displayRole = getActivity().findViewById(R.id.textView4);
+        displayRole.setText(user.getRole().equals("patient") ? "Patient":  "Docteur");
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Chargement des données en cours...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/profiles?email[eq]="+user.getLogin(), new ApiConnection.Callback() {
+        apiConnection.getFromApi(ApiConnection.URL+"/api/v1/doctors/"+user.getLogin(), user.getToken(), new ApiConnection.Callback() {
 
             @Override
             public void onResponse(int code, String response) {
 
                 try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    JsonNode jsonResponse = objectMapper.readTree(response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    System.out.println("response : "+response);
 
-                    JsonNode dataArray = jsonResponse.get("data");
-                    if (dataArray.isArray() && dataArray.size() > 0) {
-                        JsonNode firstObject = dataArray.get(0);
-                        String name = firstObject.get("name").asText();
-                        String email = firstObject.get("email").asText();
-                        String phoneNumber = firstObject.get("phoneNumber").asText();
-                        String address = firstObject.get("role").asText();
-                        profile = "storage/veterinaires/profile_logo.png";
-                        EditText nameFR = view.findViewById(R.id.nameFR);
-                        nameFR.setText(name);
-                        EditText nameAR = view.findViewById(R.id.nameAR);
-                        nameAR.setText(email);
-                        EditText addresse = view.findViewById(R.id.addresse);
-                        addresse.setText(address);
+                    if (jsonObject != null) {
+                        String firstName = jsonObject.getString("firstName");
+                        String lastName = jsonObject.getString("lastName");
+                        String location = jsonObject.getString("location");
+                        String phoneNumber = jsonObject.getString("phoneNumber");
+                        String dateOfBirth = jsonObject.getString("date_of_birth");
+                        String password = jsonObject.getString("password");
+                        String imageUrl = jsonObject.getString("image_url");
+
+
+
+                        EditText NameProfil = view.findViewById(R.id.NameProfil);
+                        NameProfil.setText(lastName +" "+ firstName);
+                        EditText cinProfil = view.findViewById(R.id.cinProfil);
+                        cinProfil.setText(dateOfBirth);
+
+                        EditText addresse = view.findViewById(R.id.addressProfil);
+                        if(location.equals("null")) {
+                            addresse.setText("Votre location ?");
+                        }else {
+                            addresse.setText(location);
+                        }
                         EditText telephone = view.findViewById(R.id.phoneNumber);
                         telephone.setText(phoneNumber);
+                        EditText bloodType = view.findViewById(R.id.bloodTypeProfil);
+                        bloodType.setText(password);
+                        EditText passwordP = view.findViewById(R.id.passwordProfil);
+                        passwordP.setText(password);
+                        ProgressBar loadingProgress = view.findViewById(R.id.loading_progress);
 
+                        final CountDownLatch latch = new CountDownLatch(1);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    InputStream inputStream = new URL(ApiConnection.URL+"/api/v1/doctors/display/"+imageUrl).openStream();
+                                    bitmap = BitmapFactory.decodeStream(inputStream);
+                                    updateProfilePicture(bitmap, view);
+                                    latch.countDown();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                latch.countDown();
+                            }
+                        }).start();
+
+                        try {
+                            latch.await();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
                         progressDialog.dismiss();
-
-                        String imageUrl = ApiConnection.URL+"/"+profile;
-                        apiConnection.downloadImageFromApi(imageUrl, new ApiConnection.Callback() {
-                            @Override
-                            public void onResponse(int code, String response) {
-
-                            }
-
-                            @Override
-                            public void onError(int code, String error) {
-
-                            }
-
-                            @Override
-                            public void onImageDownloaded(Bitmap image) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        updateProfilePicture(image);
-                                    }
-                                });
-                            }
-                        });
-
-
+                        loadingProgress.setVisibility(View.GONE);
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -272,16 +269,16 @@ public class ProfilFragment extends Fragment {
             public void onImageDownloaded(Bitmap image) {
 
             }
-        });*/
+        });
 
     }
 
-    private void updateProfilePicture(Bitmap image) {
-        ShapeableImageView profilePictureImageView = getActivity().findViewById(R.id.profile_picture);
+    private void updateProfilePicture(Bitmap image, View view) {
+        /*ShapeableImageView profilePictureImageView = getActivity().findViewById(R.id.profile_picture);
         profilePictureImageView.setImageBitmap(image);
         profilePictureImageView.setVisibility(View.VISIBLE);
         ProgressBar loadingProgress = getActivity().findViewById(R.id.loading_progress);
-        loadingProgress.setVisibility(View.GONE);
+        loadingProgress.setVisibility(View.INVISIBLE);*/
     }
 
 

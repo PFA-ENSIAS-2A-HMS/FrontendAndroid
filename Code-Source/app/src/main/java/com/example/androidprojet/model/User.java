@@ -2,7 +2,9 @@ package com.example.androidprojet.model;
 
 import com.example.androidprojet.enums.StatusDataBiometric;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String login;
     private String password;
     private String role;
