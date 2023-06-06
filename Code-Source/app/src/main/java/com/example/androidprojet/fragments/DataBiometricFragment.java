@@ -2,7 +2,6 @@ package com.example.androidprojet.fragments;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,10 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.androidprojet.InsideAppPatient;
-import com.example.androidprojet.PasswordActivity;
 import com.example.androidprojet.R;
-import com.example.androidprojet.SignInPatient;
 import com.example.androidprojet.database.DatabaseHelper;
 import com.example.androidprojet.enums.StatusDataBiometric;
 import com.example.androidprojet.model.DataBiometric;
@@ -66,33 +62,6 @@ public class DataBiometricFragment extends Fragment {
             textView.setText("Vos données biométriques ont déjà été envoyées. Si vous avez d'autres modifications, veuillez les enregistrer.");
             bouttonEnvoi.setText("Enregistrer");
         }
-
-        /*if(user.getRole().equals("breeder")){
-           // return inflater.inflate(R.layout.fragment_comite, container, false);
-
-            View rootView = inflater.inflate(R.layout.fragment_comite, container, false);
-            ImageButton galleryButton = rootView.findViewById(R.id.cameraButton);
-            ImageButton videoButton = rootView.findViewById(R.id.videoButton);
-            galleryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Code pour lancer l'activité de la caméra du téléphone
-                    Intent cameraIntent=new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivity(cameraIntent);
-                }
-            });
-            videoButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Code pour lancer l'activité d'enregistrement vidéo
-                    Intent videoIntent=new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
-                    startActivity(videoIntent);
-                }
-            });
-            return rootView;
-        }else{
-            //
-        }*/
         return rootView;
     }
 
@@ -158,7 +127,7 @@ public class DataBiometricFragment extends Fragment {
                     dataBiometric.setPouls(poulsP);
                     dataBiometric.setGlycemie(glycemie);
 
-                    String apiUrl = ApiConnection.URL+"/api/v1/biometrics/phone/"+user.getLogin();
+                    String apiUrl = ApiConnection.URL+"/api/v1/biometrics/"+user.getLogin();
                     String requestBody = toJSON();
                     //Toast.makeText(getActivity(), requestBody, Toast.LENGTH_SHORT).show();
 
@@ -173,7 +142,7 @@ public class DataBiometricFragment extends Fragment {
                     progressDialog.show();
 
                     if(user.getDataBiometric() == StatusDataBiometric.NOT_SUBMITTED) {
-                        apiConnection.postToApi(apiUrl, requestBody, new ApiConnection.Callback() {
+                        apiConnection.postToApi(apiUrl, requestBody, user.getToken(), new ApiConnection.Callback() {
                             @Override
                             public void onResponse(int Code,String response) {
 
@@ -223,7 +192,7 @@ public class DataBiometricFragment extends Fragment {
 
                         });
                     }else {
-                        apiConnection.putToApi(apiUrl, requestBody, new ApiConnection.Callback() {
+                        apiConnection.putToApi(apiUrl, requestBody, user.getToken(), new ApiConnection.Callback() {
                             @Override
                             public void onResponse(int Code,String response) {
 
@@ -323,5 +292,6 @@ public class DataBiometricFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 }
 
